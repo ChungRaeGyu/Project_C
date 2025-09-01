@@ -1,19 +1,18 @@
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Test : MonoBehaviour
 {
-    PhotonView pv;
+    public Text text;
 
     void Start()
     {
-        pv = GetComponent<PhotonView>();
-        pv.RPC("TestRPC", RpcTarget.AllBuffered, "Hello, Photon!");
+        text.GetComponent<Text>();
     }
-    [PunRPC]
-    void TestRPC(string message)
+    private void Update()
     {
-        Debug.Log(message);
+        text.text = PhotonNetwork.IsMasterClient ? "∏∂Ω∫≈Õ" : "º’¥‘";
     }
 
 

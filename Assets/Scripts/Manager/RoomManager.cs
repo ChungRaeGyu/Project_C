@@ -1,30 +1,74 @@
-using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
-using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
+    public Text text;
+    public TMP_Text RoomNameTxt;
     public Button ReadyOrStartBtn;
+    private TMP_Text ButtonText;
+    
     public const string ReadyKey = "readyKey";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    //내가 하고 싶은 것 properties이용해서 준비상태를 결정
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        base.OnMasterClientSwitched(newMasterClient);
+        StartCoroutine(waitJoined());
+
+    }
+    private void Awake()
+    {
+        ButtonText = ReadyOrStartBtn.GetComponentInChildren<TMP_Text>();
+
+    }
     void Start()
     {
-        ReadyOrStartBtn.interactable = PhotonNetwork.IsMasterClient ? false : true;
-        ReadyOrStartBtn.GetComponentInChildren<TMP_Text>().text = PhotonNetwork.IsMasterClient?"Start":"Ready";
-        ReadyOrStartBtn.onClick.AddListener(PhotonNetwork.IsMasterClient ? StartBtn : Readybtn);
-        if(PhotonNetwork.IsMasterClient)
-            Readybtn();
+        StartCoroutine(waitJoined());
+        print("마스터 클라이언트 여부 : " + PhotonNetwork.IsMasterClient);
     }
+
+    IEnumerator waitJoined()
+    {
+        yield return new WaitUntil(() => PhotonNetwork.InRoom);
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { ReadyKey, true } });
+        else
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { ReadyKey, false } });
+
+        ReadybtnSetting();
+    }
+
+    private void ReadybtnSetting()
+    {
+        ReadyOrStartBtn.interactable = PhotonNetwork.IsMasterClient ? false : true;
+        ButtonText.text = PhotonNetwork.IsMasterClient ? "Start" : "Not Ready";
+        ReadyOrStartBtn.onClick.AddListener(PhotonNetwork.IsMasterClient ? StartBtn : Readybtn);
+
+    }
+
     void StartBtn()
     {
-        PhotonNetwork.LoadLevel("Game");
+        Debug.Log($"[SYNC] IsMaster={PhotonNetwork.IsMasterClient}, " +
+          $"AutoSync={PhotonNetwork.AutomaticallySyncScene}, " +
+          $"InRoom={PhotonNetwork.InRoom}, " +
+          $"State={PhotonNetwork.NetworkClientState}, " +
+          $"MsgQueue={PhotonNetwork.IsMessageQueueRunning}");
+        if (PhotonNetwork.AutomaticallySyncScene)
+            PhotonNetwork.LoadLevel("Game");
+        else
+        {
+            print("동기화 꺼짐");
+        }
+
     }
     void Readybtn()
     {
-        print("준비버튼");
         Hashtable props = new Hashtable();
         bool current = false;
 
@@ -33,12 +77,14 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
         props[ReadyKey] = !current; // 반전
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+        ButtonText.text = (bool)props[ReadyKey] ? "Ready" : "Not Ready";
+
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         //TODO : UI 갱신 준비상태 변경시 보여주기 필요
-
         if (!changedProps.ContainsKey(ReadyKey)) return;
 
         if (PhotonNetwork.CurrentRoom.PlayerCount != 2) return;
@@ -50,18 +96,18 @@ public class RoomManager : MonoBehaviourPunCallbacks
             {
                 if (!p.CustomProperties.TryGetValue(ReadyKey, out var v) || !(bool)v)
                 {  //값이 없거나
-                    print($"{p.NickName} 아직 준비 안 됨");
+                    ReadyOrStartBtn.interactable = false;
                     return; // 누가 아직 준비 안 됨
                 }
             }
 
             ReadyOrStartBtn.interactable = true; // 모두 준비 완료
         }
-
     }
     // Update is called once per frame
     void Update()
     {
-        
+        text.text = PhotonNetwork.IsMasterClient ? "마스터" : "손님";
+        RoomNameTxt.text = PhotonNetwork.CurrentRoom.Name;
     }
 }

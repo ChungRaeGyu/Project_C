@@ -9,6 +9,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public static NetworkManager Instance;
     public TMP_InputField NickNameInput;
+    bool reStart = false;
+    string roomName="";
+
+    public void ReJoindRoom(string name)
+    {
+        PhotonNetwork.LeaveRoom();
+        reStart = true;
+        roomName = name;
+
+        //방을 떠나고 OnJoinedLobby에서 다시 JoinRoom을 시도
+        //OnLeftRoom에서 바로 JoinRoom을 시도하면 안됨
+    }
+    public void GotoLobby()
+    {
+        reStart = false;
+        PhotonNetwork.LeaveRoom();
+    }
     public void ConnectBtn()
     {
         //시작씬 버튼
@@ -22,12 +39,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
         }
         JoinLobby();
-        PhotonNetwork.LoadLevel("Lobby");
     }
     public void JoinLobby() => PhotonNetwork.JoinLobby();
     public override void OnJoinedLobby()
     {
-        print("Room입장 : "+PhotonNetwork.LocalPlayer.NickName);
+        if (reStart)
+        {
+            PhotonNetwork.JoinRoom(roomName);
+            return;
+        }
+        PhotonNetwork.LoadLevel("Lobby");
+
     }
 
     public void QuickMatchBtn()
@@ -51,6 +73,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.IsOpen = true;
         roomOptions.MaxPlayers = 2; //최대인원
+        roomOptions.EmptyRoomTtl = 5;
+        roomOptions.CleanupCacheOnLeave = true;
         PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
@@ -60,21 +84,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Instance = this;
         DontDestroyOnLoad(gameObject);
         Screen.SetResolution(1080, 600, false);
-        PhotonNetwork.AutomaticallySyncScene = true; // 방장 씬 전환 → 모든 클라이언트 동기화
         Application.runInBackground = true; // 포커스 잃어도 네트워크 유지에 도움
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.SendRate = 60;
         PhotonNetwork.SerializationRate = 60;
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
