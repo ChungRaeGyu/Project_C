@@ -20,6 +20,7 @@ public class CSVtoSO
             unit.damage = float.Parse(splitData[2]);
             unit.attackSpeed = float.Parse(splitData[3]);
             unit.speed = float.Parse(splitData[4]);
+            unit.imagePath = splitData[5];
             AssetDatabase.CreateAsset(unit, $"Assets/ScriptableObject/{unit.unitName}.asset");
         }
 

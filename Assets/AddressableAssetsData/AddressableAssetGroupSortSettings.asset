@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6246fb9bb09817a49adb49ca66c4d473, type: 3}
-  m_Name: Monster
+  m_Script: {fileID: 11500000, guid: dea69d41f90c6ea4fa55c27c1d60c145, type: 3}
+  m_Name: AddressableAssetGroupSortSettings
   m_EditorClassIdentifier: 
-  unitName: Monster
-  cost: 1
-  damage: 1
-  attackSpeed: 1
-  speed: 1
-  imagePath: Assets/Images/Monster.png
-  sprite: {fileID: 0}
+  sortOrder:
+  - ed6fdb03f94aa4847a205c89ec3fbeca

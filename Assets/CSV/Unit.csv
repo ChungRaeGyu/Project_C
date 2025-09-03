@@ -1,2 +1,3 @@
-﻿Name,Cost,Damage,AttackSpeed,Speed,DPS,DPS_PerCost
-Monster,1,1,1,1,1,1
+﻿Name,Cost,Damage,AttackSpeed,Speed,ImagePath,DPS,DPS_PerCost
+Monster,1,1,1,1,Assets/Images/Monster.png,1,1
+Monster1,1,2,3,2,Assets/Images/Monster1.png,6,6

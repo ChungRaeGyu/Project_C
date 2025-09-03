@@ -8,5 +8,5 @@ public class Unit : ScriptableObject
     public float damage;
     public float attackSpeed;
     public float speed;
-
+    public string imagePath;
 }

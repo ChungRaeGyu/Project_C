@@ -55,6 +55,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void QuickMatchBtn()
     {
         //여기다가 조건을 달면 이게 mmr매칭이나 이런게 된다.
+        AddressableManager.Instance.ReleaseAll();
         PhotonNetwork.JoinRandomRoom();
     }
     public override void OnJoinedRoom()
