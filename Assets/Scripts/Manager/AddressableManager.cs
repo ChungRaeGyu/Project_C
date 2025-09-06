@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -16,22 +17,18 @@ public class AddressableManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void LoadImage(string path)
+    public async Task<Sprite> LoadImage(string path)
     {
         AsyncOperationHandle<Sprite> handle = Addressables.LoadAssetAsync<Sprite>(path);
-        handle.Completed += (obj) =>
-        {
-            if (obj.Status == AsyncOperationStatus.Succeeded)
-            {
-                Debug.Log("Image Load Success");
-                //이미지 로드 성공 시 처리할 내용
-                Sprite loadedSprite = obj.Result;
-                handles.Add(handle);
-                imageDictionary[path] = loadedSprite;
-            }
-            
-        };
+        Sprite loadedSprite = await handle.Task;
 
+        Debug.Log("Image Load Success");
+                //이미지 로드 성공 시 처리할 내용
+                //패스를 가지고 위치를 받는다.
+        handles.Add(handle);
+        imageDictionary[path] = loadedSprite;
+            
+        return loadedSprite;
     }
 
     public void ReleaseAll()

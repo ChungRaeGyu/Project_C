@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,22 +29,19 @@ public class LobbyManager : MonoBehaviour
         cardCheckBtn.onClick.AddListener(OpenCardBoard);
         closeCardPanel.onClick.AddListener(OpenCardBoard);
 
-        StartCoroutine(init());
-
-
-
+        //StartCoroutine(init());
+        _ = Init();
     }
 
-    IEnumerator init()
+    private async Task Init()
     {
         foreach (var unit in dataManager.unitSO)
         {
             GameObject obj = Instantiate(dataManager.cardPrefab, cardContent.transform);
             obj.GetComponent<Card>().unit = unit;
             obj.GetComponent<Card>().descriptionPanel = descriptionPanel;
-            AddressableManager.Instance.LoadImage(unit.imagePath);
-            yield return new WaitUntil(() => AddressableManager.Instance.imageDictionary.ContainsKey(unit.imagePath));
-            obj.GetComponent<Image>().sprite = AddressableManager.Instance.imageDictionary[unit.imagePath];
+            Sprite sprite = await AddressableManager.Instance.LoadImage(unit.imagePath);
+            obj.GetComponent<Image>().sprite = sprite;
         }
     }
     private void OpenCardBoard()

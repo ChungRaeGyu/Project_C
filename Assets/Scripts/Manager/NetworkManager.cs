@@ -85,7 +85,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Screen.SetResolution(1080, 600, false);
+        Screen.SetResolution(540, 960, false);
         Application.runInBackground = true; // 포커스 잃어도 네트워크 유지에 도움
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.SendRate = 60;

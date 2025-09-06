@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -87,30 +88,44 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
+        Debug.Log("입장 :" +targetPlayer.NickName);
         //TODO : UI 갱신 준비상태 변경시 보여주기 필요
         if (!changedProps.ContainsKey(ReadyKey)) return;
 
-        if (PhotonNetwork.CurrentRoom.PlayerCount != 2) return;
-
+        int temp = 0;
         // 마스터만 시작 조건 체크
-        if (PhotonNetwork.IsMasterClient)
+        foreach (var p in PhotonNetwork.PlayerList)
         {
-            foreach (var p in PhotonNetwork.PlayerList)
-            {
-                if (!p.CustomProperties.TryGetValue(ReadyKey, out var v) || !(bool)v)
-                {  //값이 없거나
-                    ReadyOrStartBtn.interactable = false;
-                    return; // 누가 아직 준비 안 됨
+            if (!p.CustomProperties.TryGetValue(ReadyKey, out var v) || !(bool)v)
+            {  //값이 없거나 //값이 false일때
+                if (p.IsMasterClient)
+                {
+                    ReadyOrStartBtn.interactable = false; // 마스터는 준비 가능
+                    ReadyUI(false,0); //완료를 안기다려도 됌
                 }
+                else
+                {
+                    ReadyUI(false,1);
+                }
+            }else if(p.CustomProperties.TryGetValue(ReadyKey, out var va) && (bool)va)
+            {
+                ReadyUI(true, p.IsMasterClient ? 0: 1);     
+                temp++;
             }
-
+        }
+        if(temp == 2)
+        {
             ReadyOrStartBtn.interactable = true; // 모두 준비 완료
         }
     }
 
-    private void ReadyUI()
+    private async Task ReadyUI(bool bol, int index)
     {
-        
+        string path = bol ? "Assets/Images/O.png" : "Assets/Images/X.png";
+        Sprite sprite =await AddressableManager.Instance.LoadImage(path);
+        readyImage[index].sprite = sprite;
+
+
     }
     // Update is called once per frame
     void Update()

@@ -21,6 +21,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b112848741545d8488ab392b61d8d9a3
+    m_Address: Assets/Images/O.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c7b01676b65f93648924fcc9da9c67f6
     m_Address: Assets/Images/Monster.png
     m_ReadOnly: 0
@@ -32,6 +38,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d78e2401edfa0a84e893ce1745d54a00
+    m_Address: Assets/Images/X.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5e31874c1bf2220419d4aed124553769, type: 2}
