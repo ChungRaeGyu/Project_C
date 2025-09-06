@@ -7,10 +7,12 @@ using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
-    public Text text;
     public TMP_Text RoomNameTxt;
     public Button ReadyOrStartBtn;
     private TMP_Text ButtonText;
+    
+    [SerializeField] Image[] readyImage;
+    [SerializeField] Image[] kindImage;  //어떤 덱인지 알려줄 꺼임
     
     public const string ReadyKey = "readyKey";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -18,6 +20,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
+        //나중에 커스텀 룸 만들때 필요함 근데 이게 마스터가 바뀌면서 Room연동이 안됌
         base.OnMasterClientSwitched(newMasterClient);
         StartCoroutine(waitJoined());
 
@@ -104,10 +107,14 @@ public class RoomManager : MonoBehaviourPunCallbacks
             ReadyOrStartBtn.interactable = true; // 모두 준비 완료
         }
     }
+
+    private void ReadyUI()
+    {
+        
+    }
     // Update is called once per frame
     void Update()
     {
-        text.text = PhotonNetwork.IsMasterClient ? "마스터" : "손님";
         RoomNameTxt.text = PhotonNetwork.CurrentRoom.Name;
     }
 }
