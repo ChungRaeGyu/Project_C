@@ -1,6 +1,8 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
+using System.IO;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -11,7 +13,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public TMP_Text RoomNameTxt;
     public Button ReadyOrStartBtn;
     private TMP_Text ButtonText;
-    
+    [Header("DeckPanel")] //이거 지금 보여줘야함
+    public GameObject DeckPanel;
+    public Transform DeckContent;
+
     [SerializeField] Image[] readyImage;
     [SerializeField] Image[] kindImage;  //어떤 덱인지 알려줄 꺼임
     
@@ -40,10 +45,26 @@ public class RoomManager : MonoBehaviourPunCallbacks
     IEnumerator waitJoined()
     {
         yield return new WaitUntil(() => PhotonNetwork.InRoom);
+        foreach(var player in PhotonNetwork.PlayerList)
+        {
+            if (!player.CustomProperties.ContainsKey("Deck"))
+                break;
+            if (player.IsMasterClient)
+            {
+                _=kindUI(0, (int)player.CustomProperties["Deck"]);
+            }
+            else
+            {
+                _=kindUI(1, (int)player.CustomProperties["Deck"]);
+            }
+        }
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Deck", DataManager.Instance.deckIndex } });
         if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { ReadyKey, true } });
         else
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { ReadyKey, false } });
+
+        _ = DataManager.Instance.ShowDeck(DataManager.Instance.deckIndex, DeckContent);
 
         ReadybtnSetting();
     }
@@ -64,7 +85,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
           $"State={PhotonNetwork.NetworkClientState}, " +
           $"MsgQueue={PhotonNetwork.IsMessageQueueRunning}");
         if (PhotonNetwork.AutomaticallySyncScene)
+        {
+            AddressableManager.Instance.ReleaseAll();
             PhotonNetwork.LoadLevel("Game");
+
+        }
         else
         {
             print("동기화 꺼짐");
@@ -85,11 +110,32 @@ public class RoomManager : MonoBehaviourPunCallbacks
         ButtonText.text = (bool)props[ReadyKey] ? "Ready" : "Not Ready";
 
     }
-
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        //이미지 로딩이 바로바로 안되면 좀 기다리게 끔? 안되면 로딩창을 만들어서 씬 전환시 모든 비동기가 끝나면 화면이 보이게 하는거지
+        if (newPlayer.IsMasterClient)
+        {
+            _=kindUI(0, (int)newPlayer.CustomProperties["Deck"]);
+        }
+        else
+        {
+            _=kindUI(1, (int)newPlayer.CustomProperties["Deck"]);
+        }
+    }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        Debug.Log("입장 :" +targetPlayer.NickName);
-        //TODO : UI 갱신 준비상태 변경시 보여주기 필요
+        //종류 이미지 바꿔주기
+        if(changedProps.ContainsKey("Deck"))
+        {
+            if (targetPlayer.IsMasterClient)
+            {
+                _=kindUI(0, (int)changedProps["Deck"]);
+            }
+            else
+            {
+                _=kindUI(1, (int)changedProps["Deck"]);
+            }
+        }
         if (!changedProps.ContainsKey(ReadyKey)) return;
 
         int temp = 0;
@@ -101,15 +147,15 @@ public class RoomManager : MonoBehaviourPunCallbacks
                 if (p.IsMasterClient)
                 {
                     ReadyOrStartBtn.interactable = false; // 마스터는 준비 가능
-                    ReadyUI(false,0); //완료를 안기다려도 됌
+                    _=ReadyUI(false,0); //완료를 안기다려도 됌
                 }
                 else
                 {
-                    ReadyUI(false,1);
+                    _ = ReadyUI(false, 1);
                 }
             }else if(p.CustomProperties.TryGetValue(ReadyKey, out var va) && (bool)va)
             {
-                ReadyUI(true, p.IsMasterClient ? 0: 1);     
+                _ = ReadyUI(true, p.IsMasterClient ? 0 : 1);     
                 temp++;
             }
         }
@@ -124,9 +170,21 @@ public class RoomManager : MonoBehaviourPunCallbacks
         string path = bol ? "Assets/Images/O.png" : "Assets/Images/X.png";
         Sprite sprite =await AddressableManager.Instance.LoadImage(path);
         readyImage[index].sprite = sprite;
-
-
     }
+    private async Task kindUI(int index, int deckIndex)
+    {
+        Deck eDeck = (Deck)deckIndex;
+        string path = "Assets/Images/" + eDeck.ToString() + ".png";
+        Debug.Log("Path : " + path);
+        Sprite sprite = await AddressableManager.Instance.LoadImage(path);
+        kindImage[index].sprite = sprite;
+    }
+    #region DeckPanel
+    public void DeckOpenBtnClick()
+    {
+        DeckPanel.SetActive(!DeckPanel.activeSelf);
+    }
+    #endregion
     // Update is called once per frame
     void Update()
     {

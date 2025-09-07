@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class DescriptionPanel : MonoBehaviour
 {
+    //이걸 어드레서블로 소환해?
     //얘를 쭉 한번 들고 다녀 볼까
     public Button closeDescriptionPanel;
     [SerializeField]Image image;
@@ -11,7 +12,6 @@ public class DescriptionPanel : MonoBehaviour
     [HideInInspector]
     public Unit unit;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     private void Start()
     {
         image.GetComponent<Sprite>();

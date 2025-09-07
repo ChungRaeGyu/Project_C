@@ -13,11 +13,11 @@ public class LobbyManager : MonoBehaviour
     public Transform cardContent;
     DataManager dataManager;
 
-    [SerializeField] DescriptionPanel descriptionPanel;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
         dataManager = DataManager.Instance;
+        
     }
 
     void Start()
@@ -30,20 +30,17 @@ public class LobbyManager : MonoBehaviour
         closeCardPanel.onClick.AddListener(OpenCardBoard);
 
         //StartCoroutine(init());
-        _ = Init();
+        Init();
     }
 
-    private async Task Init()
+    private void Init()
     {
-        foreach (var unit in dataManager.unitSO)
-        {
-            GameObject obj = Instantiate(dataManager.cardPrefab, cardContent.transform);
-            obj.GetComponent<Card>().unit = unit;
-            obj.GetComponent<Card>().descriptionPanel = descriptionPanel;
-            Sprite sprite = await AddressableManager.Instance.LoadImage(unit.imagePath);
-            obj.GetComponent<Image>().sprite = sprite;
-        }
+        //덱 종류별로 content바꿔주기
+        _= dataManager.ShowDeck((int)Deck.FirstDeck, cardContent);
+        _= dataManager.ShowDeck((int)Deck.SecondDeck, cardContent);
+        _= dataManager.ShowDeck((int)Deck.ThirdDeck, cardContent);
     }
+
     private void OpenCardBoard()
     {
         print("실행");

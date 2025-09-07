@@ -15,8 +15,26 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: ed6fdb03f94aa4847a205c89ec3fbeca
   m_SerializeEntries:
+  - m_GUID: 518c3d1850a549940bc985f584c454b1
+    m_Address: Assets/Images/FirstDeck.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 54c415d9433dd414bbe8a8a845cbe710
     m_Address: Assets/Images/Monster1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7952b4e993dd6574194b895f4d035b88
+    m_Address: Assets/Images/ThirdDeck.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f284f62998ff6249b2eb18143024270
+    m_Address: Assets/Images/SecondDeck.png
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

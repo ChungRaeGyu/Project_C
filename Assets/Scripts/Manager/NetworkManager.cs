@@ -56,7 +56,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         //여기다가 조건을 달면 이게 mmr매칭이나 이런게 된다.
         AddressableManager.Instance.ReleaseAll();
-        
+        DataManager.Instance.DeckSetting();
+        PhotonNetwork.SetPlayerCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Deck", DataManager.Instance.deckIndex } });
         PhotonNetwork.JoinRandomRoom();
     }
     public override void OnJoinedRoom()
