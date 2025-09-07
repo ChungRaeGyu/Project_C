@@ -60,15 +60,18 @@ public class DataManager : MonoBehaviour
         //얘를 나중에 DataManager에 빼가지고 Room에서도 자기에 해당하는 덱을 보여줄 수 있게 하면 되겠다.
         foreach (var unit in unitSO[num])
         {
-            //cardContent도 여러개를 받아 줘야한다.
-            GameObject obj = Instantiate(cardPrefab, content);
-            obj.GetComponent<Card>().unit = unit;
-            obj.GetComponent<Card>().descriptionPanel = descriptionPanel;
-            Sprite sprite = await AddressableManager.Instance.LoadImage(unit.imagePath);
-            obj.GetComponent<Image>().sprite = sprite;
+            _=ShowCard(content, unit);
         }
     }
-
+    public async Task ShowCard(Transform content, Unit unit)
+    {
+        //cardContent도 여러개를 받아 줘야한다.
+        GameObject obj = Instantiate(cardPrefab, content);
+        obj.GetComponent<Card>().unit = unit;
+        obj.GetComponent<Card>().descriptionPanel = descriptionPanel;
+        Sprite sprite = await AddressableManager.Instance.LoadImage(unit.imagePath);
+        obj.GetComponent<Image>().sprite = sprite;
+    }
     public Unit[] SuffleDeck()
     {
         //덱 섞기
