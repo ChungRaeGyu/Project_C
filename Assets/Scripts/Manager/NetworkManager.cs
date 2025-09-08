@@ -24,6 +24,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void GotoLobby()
     {
         reStart = false;
+        AddressableManager.Instance.ReleaseAll();
         PhotonNetwork.LeaveRoom();
     }
     public void ConnectBtn()
@@ -33,7 +34,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnConnectedToMaster()
     {
-        print("서버접속 완료");
         if (PhotonNetwork.LocalPlayer.NickName.IsNullOrEmpty())
         {
             PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
@@ -45,6 +45,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (reStart)
         {
+            Debug.Log("여기여기여여기때문인가??");
             PhotonNetwork.JoinRoom(roomName);
             return;
         }
@@ -62,12 +63,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        print("방입장");
-        PhotonNetwork.LoadLevel("Room");
+        if(PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("Room");
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        print("빈방없음 방생성");
         CreateRoom();
     }
     public void CreateRoom()

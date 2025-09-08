@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Prefabs
+  m_EditorClassIdentifier: 
+  m_GroupName: Prefabs
+  m_GUID: 1e3555f6fdd457e4fb1a4dc936afae4a
+  m_SerializeEntries:
+  - m_GUID: 4389bb6a01be01d4cb845ab2936dd8a9
+    m_Address: Assets/Prefabs/GhostMonster.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc8936c17907f1e408e6383d74824d27
+    m_Address: Assets/Prefab/Image.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb652175e4c6b8a46ae15e40b80eaf48
+    m_Address: Assets/Prefabs/Monster.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa6c07fbb21c186498fd757b10e37a7e
+    m_Address: Assets/Prefabs/GhostMonster 1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 5e31874c1bf2220419d4aed124553769, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ec8be3c4ddca47a4f8ed5b3245f2c99e, type: 2}
+    - {fileID: 11400000, guid: 72f666a8e2fc6db4885a9c3d16f393f2, type: 2}

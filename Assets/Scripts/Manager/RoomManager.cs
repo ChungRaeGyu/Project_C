@@ -24,13 +24,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //내가 하고 싶은 것 properties이용해서 준비상태를 결정
 
-    public override void OnMasterClientSwitched(Player newMasterClient)
+/*    public override void OnMasterClientSwitched(Player newMasterClient)
     {
         //나중에 커스텀 룸 만들때 필요함 근데 이게 마스터가 바뀌면서 Room연동이 안됌
         base.OnMasterClientSwitched(newMasterClient);
         StartCoroutine(waitJoined());
 
-    }
+    }*/
     private void Awake()
     {
         ButtonText = ReadyOrStartBtn.GetComponentInChildren<TMP_Text>();
@@ -39,23 +39,32 @@ public class RoomManager : MonoBehaviourPunCallbacks
     void Start()
     {
         StartCoroutine(waitJoined());
-        print("마스터 클라이언트 여부 : " + PhotonNetwork.IsMasterClient);
     }
 
     IEnumerator waitJoined()
     {
         yield return new WaitUntil(() => PhotonNetwork.InRoom);
+        Debug.Log(PhotonNetwork.PlayerList.Length);
         foreach(var player in PhotonNetwork.PlayerList)
         {
-            if (!player.CustomProperties.ContainsKey("Deck"))
-                break;
-            if (player.IsMasterClient)
+            if (player.CustomProperties.ContainsKey("Deck"))
             {
-                _=kindUI(0, (int)player.CustomProperties["Deck"]);
+                if (player.IsMasterClient)
+                {
+                    Debug.Log("마스터 클라이언트이미지");
+
+                    _ = kindUI(0, (int)player.CustomProperties["Deck"]);
+                }
+                else
+                {
+                    Debug.Log("Slave 클라이언트이미지");
+
+                    _ = kindUI(1, (int)player.CustomProperties["Deck"]);
+                }
             }
             else
             {
-                _=kindUI(1, (int)player.CustomProperties["Deck"]);
+                Debug.Log(player.NickName);
             }
         }
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Deck", DataManager.Instance.deckIndex } });
@@ -110,18 +119,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
         ButtonText.text = (bool)props[ReadyKey] ? "Ready" : "Not Ready";
 
     }
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        //이미지 로딩이 바로바로 안되면 좀 기다리게 끔? 안되면 로딩창을 만들어서 씬 전환시 모든 비동기가 끝나면 화면이 보이게 하는거지
-        if (newPlayer.IsMasterClient)
-        {
-            _=kindUI(0, (int)newPlayer.CustomProperties["Deck"]);
-        }
-        else
-        {
-            _=kindUI(1, (int)newPlayer.CustomProperties["Deck"]);
-        }
-    }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         //종류 이미지 바꿔주기
@@ -129,11 +126,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
         {
             if (targetPlayer.IsMasterClient)
             {
-                _=kindUI(0, (int)changedProps["Deck"]);
+                _ = kindUI(0, (int)changedProps["Deck"]);
+                Debug.Log("마스터 클라이언트이미지");
             }
             else
             {
-                _=kindUI(1, (int)changedProps["Deck"]);
+                _ = kindUI(1, (int)changedProps["Deck"]);
+                Debug.Log("Slave 호출");
             }
         }
         if (!changedProps.ContainsKey(ReadyKey)) return;
@@ -175,7 +174,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         Deck eDeck = (Deck)deckIndex;
         string path = "Assets/Images/" + eDeck.ToString() + ".png";
-        Debug.Log("Path : " + path);
         Sprite sprite = await AddressableManager.Instance.LoadImage(path);
         kindImage[index].sprite = sprite;
     }

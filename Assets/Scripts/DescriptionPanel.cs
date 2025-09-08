@@ -11,6 +11,8 @@ public class DescriptionPanel : MonoBehaviour
     [SerializeField]TMP_Text descriptionText;
     [HideInInspector]
     public Unit unit;
+    [HideInInspector]
+    public Sprite sprite;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -22,7 +24,7 @@ public class DescriptionPanel : MonoBehaviour
     }
     public void init()
     {
-        image.sprite = AddressableManager.Instance.imageDictionary[unit.imagePath];
+        image.sprite = sprite;
         descriptionText.text = $"이름 : {unit.unitName}\n비용 : {unit.cost}\n공격력 : {unit.damage}\n공격속도 : {unit.attackSpeed}\n이동속도 : {unit.speed}";
     }
 }

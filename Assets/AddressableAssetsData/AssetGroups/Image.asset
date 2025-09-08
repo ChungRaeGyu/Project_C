@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Image
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Image
   m_GUID: ed6fdb03f94aa4847a205c89ec3fbeca
   m_SerializeEntries:
   - m_GUID: 518c3d1850a549940bc985f584c454b1
@@ -50,12 +50,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cc8936c17907f1e408e6383d74824d27
-    m_Address: Assets/Prefab/Image.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Card
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d78e2401edfa0a84e893ce1745d54a00
     m_Address: Assets/Images/X.png

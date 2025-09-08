@@ -321,6 +321,7 @@ MonoBehaviour:
   image: {fileID: 1317035741}
   descriptionText: {fileID: 1594544634}
   unit: {fileID: 0}
+  sprite: {fileID: 0}
 --- !u!1 &310422288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,32 +1342,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
   - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
   - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
   secondDeck:
   - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
   thiredDeck:
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
   - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
   cardPrefab: {fileID: 7877361441118220407, guid: cc8936c17907f1e408e6383d74824d27, type: 3}
   descriptionPanel: {fileID: 286521371}
@@ -1893,7 +1871,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 382, y: 738}
+  m_AnchoredPosition: {x: 339.5, y: 869.8}
   m_SizeDelta: {x: 100.2625, y: 94.4538}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1711277053

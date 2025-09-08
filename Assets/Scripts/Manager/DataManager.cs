@@ -60,7 +60,7 @@ public class DataManager : MonoBehaviour
         //얘를 나중에 DataManager에 빼가지고 Room에서도 자기에 해당하는 덱을 보여줄 수 있게 하면 되겠다.
         foreach (var unit in unitSO[num])
         {
-            _=ShowCard(content, unit);
+            await ShowCard(content, unit);
         }
     }
     public async Task ShowCard(Transform content, Unit unit)

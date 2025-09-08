@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     [Header("Test Settings")]
     public Button GoToLobbyBtn;
     public Button GoToRoomBtn;
@@ -15,6 +16,13 @@ public class GameManager : MonoBehaviour
     private int startHandCount = 5; //시작할 때 들고 있는 카드 수
     [SerializeField]private Transform handParent; //손에 들고 있는 카드들 부모
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private void Awake()
+    {
+        if (Instance != null) { Destroy(gameObject); return; }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
         GoToLobbyBtn.onClick.AddListener(() =>
@@ -51,5 +59,10 @@ public class GameManager : MonoBehaviour
         currentHands.Add(unit);
         //카드를 뽑아서 보여준다. 
         _= DataManager.Instance.ShowCard(handParent, unit);
+    }
+
+    public void RemoveCard(Unit u)
+    {
+        currentHands.Remove(u);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -33,12 +34,22 @@ public class LobbyManager : MonoBehaviour
         Init();
     }
 
-    private void Init()
+    private async void Init()
     {
         //덱 종류별로 content바꿔주기
-        _= dataManager.ShowDeck((int)Deck.FirstDeck, cardContent);
-        _= dataManager.ShowDeck((int)Deck.SecondDeck, cardContent);
-        _= dataManager.ShowDeck((int)Deck.ThirdDeck, cardContent);
+        try
+        {
+            //이러면 비동기가 1도 의미 없긴해
+            await dataManager.ShowDeck((int)Deck.FirstDeck, cardContent);
+            await dataManager.ShowDeck((int)Deck.SecondDeck, cardContent);
+            await dataManager.ShowDeck((int)Deck.ThirdDeck, cardContent);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Init 에러 : "+ex);
+            
+        }
+
     }
 
     private void OpenCardBoard()
