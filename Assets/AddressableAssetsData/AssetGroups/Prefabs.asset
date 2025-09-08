@@ -34,7 +34,7 @@ MonoBehaviour:
     - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fa6c07fbb21c186498fd757b10e37a7e
-    m_Address: Assets/Prefabs/GhostMonster 1.prefab
+    m_Address: Assets/Prefabs/GhostMonster1.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

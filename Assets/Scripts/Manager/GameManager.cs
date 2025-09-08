@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,11 +44,10 @@ public class GameManager : MonoBehaviour
         //첫 시작
         for(int i = 0; i < startHandCount; i++)
         {
-            DrawCard();
+           DrawCard();
         }
-
     }
-    private void DrawCard()
+    private async Task DrawCard()
     {
         //카드 뽑기
         if(currentDeck.Count == 0)
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
         Unit unit = currentDeck.Dequeue();
         currentHands.Add(unit);
         //카드를 뽑아서 보여준다. 
-        _= DataManager.Instance.ShowCard(handParent, unit);
+        await DataManager.Instance.ShowCard(handParent, unit);
     }
 
     public void RemoveCard(Unit u)

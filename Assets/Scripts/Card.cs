@@ -27,8 +27,11 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
     void Update()
     {
-        if (SceneManager.sceneCount < 2)
+        if (SceneManager.GetActiveScene().buildIndex < 2)
+        {
+            Debug.Log("¾È‰Î");
             return;
+        }
         if (isPressed)
         {
             pressTimer += Time.deltaTime;

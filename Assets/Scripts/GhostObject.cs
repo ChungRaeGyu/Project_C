@@ -1,4 +1,5 @@
 using ExitGames.Client.Photon;
+using Photon.Pun;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,18 +14,18 @@ public class GhostObject : MonoBehaviour
     {
         origin = GetComponent<Renderer>().material.color;
     }
-    private async void Spawn()
+    private void Spawn()
     {
         //유닛 소환
         //고스트 삭제
         if(CanPlaced(transform.position))
         {
             //고스트 삭제, 유닛 소환
-            GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
+            //GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
+            GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", transform.position, Quaternion.identity);
             obj.transform.position = transform.position;
             card.CardRemove(); //카드 삭제
             //카드 삭제
-            //게임매니저에 있는 currenthand에서 이 카드 Unit으로 찾아서 삭제
         }
         else
         {

@@ -91,5 +91,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.SendRate = 60;
         PhotonNetwork.SerializationRate = 60;
+        PhotonNetwork.PrefabPool = new AddressableManager();
     }
 }

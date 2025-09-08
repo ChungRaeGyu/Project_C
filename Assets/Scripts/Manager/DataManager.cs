@@ -44,7 +44,7 @@ public class DataManager : MonoBehaviour
     public void DeckSetting()
     {
         //QuickMatch를 눌렀을 때 실제 사용할 덱 선택
-        deckIndex =  Random.Range(0, (int)Deck.Length);
+        deckIndex = 0;//Random.Range(0, (int)Deck.Length);
         useDeck = unitSO[deckIndex];
     }
     public void DeckReset()
