@@ -20,7 +20,8 @@ public class GhostObject : MonoBehaviour
         if(CanPlaced(transform.position))
         {
             //고스트 삭제, 유닛 소환
-            _= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
+            GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
+            obj.transform.position = transform.position;
             card.CardRemove(); //카드 삭제
             //카드 삭제
             //게임매니저에 있는 currenthand에서 이 카드 Unit으로 찾아서 삭제

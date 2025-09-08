@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -26,6 +27,8 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
     void Update()
     {
+        if (SceneManager.sceneCount < 2)
+            return;
         if (isPressed)
         {
             pressTimer += Time.deltaTime;
@@ -40,14 +43,12 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("Pointer Down");
         isPressed = true;
         pressTimer = 0f;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log("Pointer Up");
         if (isPressed)
         {
             //카드의 기본정보를 얻고 설명창을 열어 줄꺼야
