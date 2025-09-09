@@ -39,14 +39,17 @@ public class GameManager : MonoBehaviour
     private float startTime = 0;
     private float time = 0;
     private bool isStart = false;
-
+    
+    [HideInInspector]
     public int cost = 0;
     private float costTime = 0;
     private int occupation = 3; //점령확인
 
     private PhotonView pv;
 
-    private List<GameObject>[] gameObjects = new List<GameObject>[3];
+    [HideInInspector]
+    public List<GameObject>[] objList = new List<GameObject>[3];
+    [HideInInspector] 
     public bool[] lineBool = new bool[]{ true, true, true };
     
     public Transform[] position; //탑의 위치 값으로 쓰면 되겠다
@@ -67,7 +70,7 @@ public class GameManager : MonoBehaviour
     }
     public void LindAdd(GameObject obj,int n)
     {
-        gameObjects[n].Add(obj);
+        objList[n].Add(obj);
     }
     private void Update()
     {
@@ -100,11 +103,11 @@ public class GameManager : MonoBehaviour
         //몇번째 라인인지 어떻게 받아올까
         //길을 나눠서 트리거로 해가지고 들어오면 되긴할꺼같네
         lineBool[n] = false; //라인닫기
-        foreach (var obj in gameObjects[n])
+        foreach (var obj in objList[n])
         {
             AddressableManager.Instance.ReleaseObj(obj);
         }
-        gameObjects[n].Clear();
+        objList[n].Clear();
     }
     private void CheckWinner()
     {

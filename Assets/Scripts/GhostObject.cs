@@ -20,8 +20,8 @@ public class GhostObject : MonoBehaviour
         //유닛 소환
         //고스트 삭제
         int line = GetLine();
-        //설치 조건 몬스터가 겹치[는가 , 라인이 살아있는가, 라인의 최대값인가(이거 좀 더 해야함)
-        if (CanPlaced(transform.position) && GameManager.Instance.lineBool[line])
+        //설치 조건 몬스터가 겹치[는가 , 라인이 살아있는가, 최대값을 임의로 4로 지정
+        if (CanPlaced(transform.position) && GameManager.Instance.lineBool[line] && GameManager.Instance.objList[line].Count<4)
         {
             //고스트 삭제, 유닛 소환
             //GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
