@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform handParent; //손에 들고 있는 카드들 부모
 
     //인수
+    private float startTime = 0;
     private float time = 0;
     private bool isStart = false;
 
@@ -43,10 +46,14 @@ public class GameManager : MonoBehaviour
 
     private PhotonView pv;
 
-    public List<GameObject>[] gameObjects = new List<GameObject>[3];
+    private List<GameObject>[] gameObjects = new List<GameObject>[3];
     public bool[] lineBool = new bool[]{ true, true, true };
+    
+    public Transform[] position; //탑의 위치 값으로 쓰면 되겠다
 
-    public int currentLine = -1; //라인 각 라인에서 호출해줄 꺼다. 각라인에서 호출하기만 하면 된다. 
+    //UI
+    [SerializeField] private TMP_Text timeText;
+    [SerializeField] private TMP_Text CostText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
@@ -56,20 +63,26 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         pv = GetComponent<PhotonView>();
+
+    }
+    public void LindAdd(GameObject obj,int n)
+    {
+        gameObjects[n].Add(obj);
     }
     private void Update()
     {
         if (!isStart) return;
-        if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("StartTime",out var t))
-        {
-            time = PhotonNetwork.ServerTimestamp - (float)t; //시간 동기화
-        }
+
+        time = (PhotonNetwork.ServerTimestamp - startTime);
         if (time - costTime >= 1)
         {
             costTime = time;
             cost++;
             cost = Math.Min(cost, 10);
         }
+
+        timeText.text = time.ToString("mm:ss"); //시간 동기화
+        CostText.text = $"cost : {cost}";
 
     }
 
@@ -133,6 +146,11 @@ public class GameManager : MonoBehaviour
     private void Init()
     {
         //첫 시작
+        if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("StartTime", out var t))
+        {
+            startTime = (float)t;
+        }
+
         isStart = true;
         for (int i = 0; i < startHandCount; i++)
         {

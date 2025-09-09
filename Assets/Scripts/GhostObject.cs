@@ -1,6 +1,7 @@
-using ExitGames.Client.Photon;
+using NUnit.Framework;
 using Photon.Pun;
-using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,12 +19,17 @@ public class GhostObject : MonoBehaviour
     {
         //유닛 소환
         //고스트 삭제
-        if(CanPlaced(transform.position))
+        int line = GetLine();
+        //설치 조건 몬스터가 겹치[는가 , 라인이 살아있는가, 라인의 최대값인가(이거 좀 더 해야함)
+        if (CanPlaced(transform.position) && GameManager.Instance.lineBool[line])
         {
             //고스트 삭제, 유닛 소환
             //GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
             GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", transform.position, Quaternion.identity);
+
+            GameManager.Instance.LindAdd(obj, line);
             obj.transform.position = transform.position;
+            GameManager.Instance.cost -= card.unit.cost;
             card.CardRemove(); //카드 삭제
             //카드 삭제
         }
@@ -37,6 +43,19 @@ public class GhostObject : MonoBehaviour
         AddressableManager.Instance.ReleaseObj(this.gameObject); //고스트 삭제
 
     }
+
+    private int GetLine()
+    {
+        List<float> temp = new List<float>();
+        foreach (var t in GameManager.Instance.position)
+        {
+            float distance = Vector3.Distance(transform.position, t.position);
+            temp.Add(distance);
+        }
+        int num = temp.IndexOf(temp.Min());
+        return num;
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
         Debug.Log("드래그");

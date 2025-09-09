@@ -32,7 +32,7 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             Debug.Log("¾È‰Î");
             return;
         }
-        if (isPressed)
+        if (isPressed && unit.cost<=GameManager.Instance.cost)
         {
             pressTimer += Time.deltaTime;
 
