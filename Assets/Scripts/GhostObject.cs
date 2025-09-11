@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.SlotRacer.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,7 +21,7 @@ public class GhostObject : MonoBehaviour
         //고스트 삭제
         int line = GetLine();
         //설치 조건 몬스터가 겹치[는가 , 라인이 살아있는가, 최대값을 임의로 4로 지정
-        if (CanPlaced(transform.position) && GameManager.Instance.lineBool[line] && GameManager.Instance.objList[line].Count<4)
+        if (CanPlaced(transform.position,line))
         {
             //고스트 삭제, 유닛 소환
             //GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
@@ -63,11 +64,11 @@ public class GhostObject : MonoBehaviour
 
     }
 
-    private bool CanPlaced(Vector3 pos)
+    private bool CanPlaced(Vector3 pos,int line)
     {
         LayerMask buildBlockLayer = LayerMask.GetMask("Monster","Wall");
         Collider[] colliders = Physics.OverlapSphere(pos, 0.5f, buildBlockLayer);
-        return colliders.Length == 0;
+        return colliders.Length == 0 && GameManager.Instance.lineBool[line] && GameManager.Instance.objList[line].Count < 4;
     }
 
     private void Update()
@@ -79,7 +80,7 @@ public class GhostObject : MonoBehaviour
             Vector3 hitPoint = ray.GetPoint(distance); // 레이가 평면과 교차한 지점
             transform.position = hitPoint;
         }
-        if (CanPlaced(transform.position))
+        if (CanPlaced(transform.position, GetLine()))
         {
             GetComponent<Renderer>().material.color = origin;
         }

@@ -1,11 +1,11 @@
 using Photon.Pun;
 using Photon.Realtime;
-using System;
 using System.Collections;
-using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class RoomManager : MonoBehaviourPunCallbacks
@@ -21,16 +21,18 @@ public class RoomManager : MonoBehaviourPunCallbacks
     [SerializeField] Image[] kindImage;  //어떤 덱인지 알려줄 꺼임
     
     public const string ReadyKey = "readyKey";
+
+    private List<AsyncOperationHandle> handles = new List<AsyncOperationHandle>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //내가 하고 싶은 것 properties이용해서 준비상태를 결정
 
-/*    public override void OnMasterClientSwitched(Player newMasterClient)
-    {
-        //나중에 커스텀 룸 만들때 필요함 근데 이게 마스터가 바뀌면서 Room연동이 안됌
-        base.OnMasterClientSwitched(newMasterClient);
-        StartCoroutine(waitJoined());
+    /*    public override void OnMasterClientSwitched(Player newMasterClient)
+        {
+            //나중에 커스텀 룸 만들때 필요함 근데 이게 마스터가 바뀌면서 Room연동이 안됌
+            base.OnMasterClientSwitched(newMasterClient);
+            StartCoroutine(waitJoined());
 
-    }*/
+        }*/
     private void Awake()
     {
         ButtonText = ReadyOrStartBtn.GetComponentInChildren<TMP_Text>();
@@ -39,6 +41,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     void Start()
     {
         StartCoroutine(waitJoined());
+        AddressableManager.Instance.OnreleaseHandle += ReleaseAllImage;
     }
 
     IEnumerator waitJoined()
@@ -143,16 +146,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
         {
             if (!p.CustomProperties.TryGetValue(ReadyKey, out var v) || !(bool)v)
             {  //값이 없거나 //값이 false일때
-                if (p.IsMasterClient)
+                if (PhotonNetwork.IsMasterClient)
                 {
                     ReadyOrStartBtn.interactable = false; // 마스터는 준비 가능
-                    _=ReadyUI(false,0); //완료를 안기다려도 됌
                 }
-                else
-                {
-                    _ = ReadyUI(false, 1);
-                }
-            }else if(p.CustomProperties.TryGetValue(ReadyKey, out var va) && (bool)va)
+                _ = ReadyUI(false, 1);
+            }
+            else
             {
                 _ = ReadyUI(true, p.IsMasterClient ? 0 : 1);     
                 temp++;
@@ -160,6 +160,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
         if(temp == 2)
         {
+            temp = 0;
             ReadyOrStartBtn.interactable = true; // 모두 준비 완료
         }
     }
@@ -167,15 +168,27 @@ public class RoomManager : MonoBehaviourPunCallbacks
     private async Task ReadyUI(bool bol, int index)
     {
         string path = bol ? "Assets/Images/O.png" : "Assets/Images/X.png";
-        Sprite sprite =await AddressableManager.Instance.LoadImage(path);
+        AsyncOperationHandle handle= await AddressableManager.Instance.LoadImage(path);
+        handles.Add(handle);
+        Sprite sprite = (Sprite)handle.Result;
         readyImage[index].sprite = sprite;
     }
     private async Task kindUI(int index, int deckIndex)
     {
         Deck eDeck = (Deck)deckIndex;
         string path = "Assets/Images/" + eDeck.ToString() + ".png";
-        Sprite sprite = await AddressableManager.Instance.LoadImage(path);
+        AsyncOperationHandle handle = await AddressableManager.Instance.LoadImage(path);
+        handles.Add(handle);
+        Sprite sprite = (Sprite)handle.Result;
         kindImage[index].sprite = sprite;
+    }
+    public void ReleaseAllImage()
+    {
+        foreach (var handle in handles)
+        {
+            AddressableManager.Instance.ReleaseImage(handle); 
+        }
+        handles.Clear();
     }
     #region DeckPanel
     public void DeckOpenBtnClick()

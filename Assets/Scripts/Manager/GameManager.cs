@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,7 +47,7 @@ public class GameManager : MonoBehaviour
     private PhotonView pv;
 
     [HideInInspector]
-    public List<GameObject>[] objList = new List<GameObject>[3];
+    public List<GameObject>[] objList = { new List<GameObject>(), new List<GameObject>(), new List<GameObject>() };
     [HideInInspector] 
     public bool[] lineBool = new bool[]{ true, true, true };
     
@@ -76,6 +75,7 @@ public class GameManager : MonoBehaviour
     {
         if (!isStart) return;
 
+        //StatrTime을 조절 해줘야한다. 지금 시간이 개판임
         time = (int)(PhotonNetwork.Time - startTime);
         if (time - costTime >= 1)
         {
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
             cost = Math.Min(cost, 10);
         }
 
-        timeText.text = time.ToString("mm:ss"); //시간 동기화
+        timeText.text = System.TimeSpan.FromSeconds(time).ToString(@"mm\:ss"); //시간 동기화
         CostText.text = $"cost : {cost}";
 
     }

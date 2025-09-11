@@ -51,7 +51,6 @@ public class LobbyManager : MonoBehaviour
 
     private void OpenCardBoard()
     {
-        print("½ÇÇà");
         cardPanel.SetActive(!cardPanel.activeSelf);
     }
 

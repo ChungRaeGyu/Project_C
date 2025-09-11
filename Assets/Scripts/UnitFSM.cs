@@ -1,10 +1,6 @@
 using Photon.Pun;
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public enum State
 {
@@ -26,8 +22,7 @@ public class UnitFSM : MonoBehaviour
     private LayerMask layerMask;
 
     private NavMeshAgent agent; //여기서 속도 조절 해줘야한다.
-    public GameObject Test;
-    [SerializeField] private UnitObj unitObj; //나중에 직렬화 없애줄꺼임
+    private UnitObj unitObj; //나중에 직렬화 없애줄꺼임
     private bool target = false;
 
     private double nextAttackTime = 0f;
@@ -70,9 +65,6 @@ public class UnitFSM : MonoBehaviour
         //공격속도에 맞춰 공격 애니메이션 재생 및 데미지 주기, 어디에? 방해물에 공격자체는 또 그 오버렙으로 해버리고
         if (PhotonNetwork.Time < nextAttackTime) return; // 아직 쿨타임 남음  
         nextAttackTime = PhotonNetwork.Time + unitObj.unit.attackSpeed;
-        if (Time.time < nextAttackTime) return; // 아직 쿨타임 남음  
-        Debug.Log("공격");
-        nextAttackTime = Time.time + unitObj.unit.attackSpeed;
         obstacle.GetDamage(unitObj.unit.damage);
     }
 
@@ -81,7 +73,6 @@ public class UnitFSM : MonoBehaviour
         //장애물이 없어졌을때
         agent.SetDestination(GameManager.Instance.tPosition[unitObj.line].transform.position);
         Debug.Log("장애물 죽음");
-        agent.SetDestination(Test.transform.position);
         ChangeState(State.SEARCH);
     }
 

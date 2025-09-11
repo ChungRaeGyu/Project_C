@@ -1,14 +1,20 @@
 using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class AddressableManager : MonoBehaviour, IPunPrefabPool
 {
+    //handles을 이게 아니라 각 생성된 애들이 핸들을 보관하고
+    //action event를 사용해서 event를 달아준다. 
+    //그리고 ReleaseAll하면 event를 호출해서 삭제한다. 
+
+    //내가 지금 하고 있는 것 뭔가를 만들때마다 handles에 딕에 넣어주고 해제하고 싶을때 다시 받아와서 해제한다.
     public static AddressableManager Instance;
+    public event Action OnreleaseHandle;
     Dictionary<string,AsyncOperationHandle<Sprite>> handles = new Dictionary<string,AsyncOperationHandle<Sprite>>();
 
     Dictionary<GameObject,AsyncOperationHandle<GameObject>> objHandles = new Dictionary<GameObject, AsyncOperationHandle<GameObject>>();
@@ -19,28 +25,12 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
-    public async Task<Sprite> LoadImage(string path)
+    public async Task<AsyncOperationHandle<Sprite>> LoadImage(string path)
     {
-        if (handles.ContainsKey(path))
-        {
-            Sprite sprite = handles[path].Result;
-            return sprite;
-        }
-        else
-        {
-            AsyncOperationHandle<Sprite> handle = Addressables.LoadAssetAsync<Sprite>(path);
-            Sprite loadedSprite = await handle.Task;
-
-            //이미지 로드 성공 시 처리할 내용
-            //패스를 가지고 위치를 받는다.
-            handles[path]=handle;
-
-            return loadedSprite;
-        }
-
+        AsyncOperationHandle<Sprite> handle = Addressables.LoadAssetAsync<Sprite>(path);
+        await handle.Task;
+        return handle;
     }
-
     public async Task<GameObject> Instantiate(string path, Transform parent = null)
     {
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(path, parent);
@@ -48,7 +38,7 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
 
 
         objHandles.Add(loadedObject,handle);
-            
+
         return loadedObject;
     }
     public void ReleaseObj(GameObject obj)
@@ -57,22 +47,18 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
         Addressables.ReleaseInstance(obj);
         objHandles.Remove(obj);
     }
-    public void ReleaseImage(string sprite)
+    public void ReleaseImage(AsyncOperationHandle handle)
     {
-        Addressables.Release(handles[sprite]);
-        handles.Remove(sprite);
+        if (!handle.IsValid()) return;
+        Addressables.Release(handle);
     }
     public void ReleaseAll()
     {
-        foreach(var handle in objHandles)
+        OnreleaseHandle?.Invoke();
+        foreach (var handle in objHandles)
         {
             Addressables.ReleaseInstance(handle.Value);
         }
-        foreach (var handle in handles)
-        {
-            Addressables.Release(handle.Value);
-        }
-        handles.Clear();
         objHandles.Clear();
     }
     #region 포톤네트워크와의 연계를 위한
@@ -99,24 +85,24 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
     /*  
 *  SO도 어드레서블을 사용해서 불러오려고 했었음  -> 근데 이게 용량이 크지 않는데 굳이 이럴 필요가 없다. 라는 결론
 *  그래서 Image만 어드레서블을 사용해서 받아오기로 함
-   public void LoadSO()
-   {
-       AsyncOperationHandle handle = Addressables.LoadAssetsAsync<Unit>("SO", (so) =>
-       {
-           AsyncOperationHandle spriteHandle = Addressables.LoadAssetAsync<Sprite>(so.imagePath);
-           Addressables.InstantiateAsync("Card", content.transform).Completed += (obj) =>
-           {
-               obj.Result.GetComponent<Card>().unit = so;
-               obj.Result.GetComponent<Card>().descriptionPanel = descriptionPanel;
-           };
-       });
-       handle.Completed += (obj) =>
-       {
-           //나중에 Release시켜주기 위함
-           handles.Add(obj);
-           print("완료");
-       };
-   }*/
+    public void LoadSO()
+    {
+        AsyncOperationHandle handle = Addressables.LoadAssetsAsync<Unit>("SO", (so) =>
+        {
+            AsyncOperationHandle spriteHandle = Addressables.LoadAssetAsync<Sprite>(so.imagePath);
+            Addressables.InstantiateAsync("Card", content.transform).Completed += (obj) =>
+            {
+                obj.Result.GetComponent<Card>().unit = so;
+                obj.Result.GetComponent<Card>().descriptionPanel = descriptionPanel;
+            };
+        });
+        handle.Completed += (obj) =>
+        {
+            //나중에 Release시켜주기 위함
+            handles.Add(obj);
+            print("완료");
+        };
+    }*/
 
 }
 

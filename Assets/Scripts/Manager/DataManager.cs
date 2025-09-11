@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public enum Deck
 {
@@ -61,16 +63,18 @@ public class DataManager : MonoBehaviour
         foreach (var unit in unitSO[num])
         {
             await ShowCard(content, unit);
+
         }
     }
     public async Task ShowCard(Transform content, Unit unit)
     {
         //cardContent도 여러개를 받아 줘야한다.
+
+        AsyncOperationHandle<Sprite> handle = await AddressableManager.Instance.LoadImage(unit.imagePath);
+
         GameObject obj = Instantiate(cardPrefab, content);
-        obj.GetComponent<Card>().unit = unit;
-        obj.GetComponent<Card>().descriptionPanel = descriptionPanel;
-        Sprite sprite = await AddressableManager.Instance.LoadImage(unit.imagePath);
-        obj.GetComponent<Image>().sprite = sprite;
+        obj.GetComponent<Card>().Init(unit, descriptionPanel, handle);
+
     }
     public Unit[] SuffleDeck()
     {

@@ -1,35 +1,49 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Collections;
+using System.Threading.Tasks;
 
 public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
 
     //유닛 스폰은 GhostObject에서 한다.
-    //[HideInInspector]
+    [HideInInspector]
     public Unit unit;
-   // [HideInInspector]
+    [HideInInspector]
     public DescriptionPanel descriptionPanel;
-    //[HideInInspector]
+    [HideInInspector]
     public Image image;
+    [HideInInspector]
+    public AsyncOperationHandle handle;
+    private Sprite sprite;
 
+    private bool initialized = false;
     private GameObject ghostObject;   // 소환할 오브젝트
     public float holdTime = 1.0f;      // 몇 초 이상 눌러야 하는지
 
     private bool isPressed = false;
     private float pressTimer = 0f;
 
-    private void Start()
+   
+    public async Task Init(Unit u,DescriptionPanel desp, AsyncOperationHandle hand)
     {
         image = GetComponent<Image>();
+        unit = u;
+        descriptionPanel = desp;
+        handle = hand;
+        sprite = (Sprite)await handle.Task;
+        image.sprite = sprite;
+        AddressableManager.Instance.OnreleaseHandle += ReleaseAllCardImage;
+        initialized = true;
     }
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex < 2)
+        if (!initialized) return;
+        if (SceneManager.GetActiveScene().buildIndex <= 2)
         {
-            Debug.Log("안됌");
             return;
         }
         if (isPressed && unit.cost<=GameManager.Instance.cost)
@@ -46,6 +60,7 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+
         isPressed = true;
         pressTimer = 0f;
     }
@@ -83,8 +98,12 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void CardRemove()
     {
-        AddressableManager.Instance.ReleaseImage(unit.imagePath); //카드 이미지 삭제
+        AddressableManager.Instance.ReleaseImage(handle); //카드 이미지 삭제
         GameManager.Instance.RemoveCard(unit); //게임매니저에 있는 currenthand에서 이 카드 Unit으로 찾아서 삭제
         Destroy(gameObject); //카드 삭제 //오브젝트 풀링 가능 나중에
+    }
+    public void ReleaseAllCardImage()
+    {
+        AddressableManager.Instance.ReleaseImage(handle); //카드 이미지 삭제
     }
 }
