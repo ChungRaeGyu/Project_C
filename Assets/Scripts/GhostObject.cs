@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using Photon.Pun;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,9 @@ public class GhostObject : MonoBehaviour
             //고스트 삭제, 유닛 소환
             //GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
             GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", transform.position, Quaternion.identity);
-
+            UnitObj unitObj = obj.GetComponent<UnitObj>();
+            unitObj.line = line;
+            unitObj.unit = card.unit;
             GameManager.Instance.LindAdd(obj, line);
             obj.transform.position = transform.position;
             GameManager.Instance.cost -= card.unit.cost;
@@ -47,7 +48,7 @@ public class GhostObject : MonoBehaviour
     private int GetLine()
     {
         List<float> temp = new List<float>();
-        foreach (var t in GameManager.Instance.position)
+        foreach (var t in GameManager.Instance.tPosition)
         {
             float distance = Vector3.Distance(transform.position, t.position);
             temp.Add(distance);

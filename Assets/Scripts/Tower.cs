@@ -9,7 +9,7 @@ public class Tower : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Monster"))
+        if (other.CompareTag("Unit"))
         {
             Debug.Log("∏ÛΩ∫≈Õ");
             GameManager.Instance.Occupation(int.Parse(gameObject.name));

@@ -3,10 +3,10 @@ using UnityEngine;
 public class UnitObj : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    //FSM으로 움직이기
-    //내 라인의 타워로 향한다.
-    //장애물이 나타나면 부순다.
-
+    //여기는 효과를 적자 어때
+    //얘를 상속받아서 효과를 쓰자
+    [SerializeField] public int line;
+    [SerializeField] public Unit unit;
     void Start()
     {
         

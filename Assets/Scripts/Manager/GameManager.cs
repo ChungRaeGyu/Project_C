@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] 
     public bool[] lineBool = new bool[]{ true, true, true };
     
-    public Transform[] position; //탑의 위치 값으로 쓰면 되겠다
+    public Transform[] tPosition; //탑의 위치 값으로 쓰면 되겠다
 
     //UI
     [SerializeField] private TMP_Text timeText;
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
     {
         if (!isStart) return;
 
-        time = (PhotonNetwork.ServerTimestamp - startTime);
+        time = (int)(PhotonNetwork.Time - startTime);
         if (time - costTime >= 1)
         {
             costTime = time;
