@@ -15,7 +15,6 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
     //내가 지금 하고 있는 것 뭔가를 만들때마다 handles에 딕에 넣어주고 해제하고 싶을때 다시 받아와서 해제한다.
     public static AddressableManager Instance;
     public event Action OnreleaseHandle;
-    Dictionary<string,AsyncOperationHandle<Sprite>> handles = new Dictionary<string,AsyncOperationHandle<Sprite>>();
 
     Dictionary<GameObject,AsyncOperationHandle<GameObject>> objHandles = new Dictionary<GameObject, AsyncOperationHandle<GameObject>>();
 
