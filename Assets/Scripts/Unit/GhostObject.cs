@@ -27,8 +27,7 @@ public class GhostObject : MonoBehaviour
             //GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //¿Ø¥÷ º“»Ø
             GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", transform.position, Quaternion.identity);
             UnitObj unitObj = obj.GetComponent<UnitObj>();
-            unitObj.line = line;
-            unitObj.unit = card.unit;
+            unitObj.Init(line, card.unit.unitName, card.unit.cost, card.unit.damage, card.unit.attackSpeed, card.unit.speed);
             GameManager.Instance.LindAdd(obj, line);
             obj.transform.position = transform.position;
             GameManager.Instance.cost -= card.unit.cost;

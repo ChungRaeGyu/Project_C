@@ -18,4 +18,3 @@ MonoBehaviour:
   attackSpeed: 1
   speed: 1
   imagePath: Assets/Images/Monster.png
-  sprite: {fileID: 0}

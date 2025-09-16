@@ -21,6 +21,12 @@ using UnityEngine.UI;
  */
 
 //할일  : 라인 만들어서 currentLine 입력시켜 주기, 탑 만들어서 몬스터가 닿았을 때 점령 완료 호출
+public enum EDeBuff
+{
+    ATKDOWN,
+    BRINGANYWAY,
+    ATKSPEEDDOWN
+}
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -50,7 +56,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject>[] objList = { new List<GameObject>(), new List<GameObject>(), new List<GameObject>() };
     [HideInInspector] 
     public bool[] lineBool = new bool[]{ true, true, true };
-    
+    [HideInInspector]
+    public Vector3[] spawnPosition = new Vector3[] {new Vector3(-5,0,-15),new Vector3(0,0,-15),new Vector3(4,0,-15), new Vector3(-5, 0, 15), new Vector3(0, 0, 15), new Vector3(4, 0, 15) };
     public Transform[] tPosition; //탑의 위치 값으로 쓰면 되겠다
 
     //UI
@@ -105,7 +112,7 @@ public class GameManager : MonoBehaviour
         lineBool[n] = false; //라인닫기
         foreach (var obj in objList[n])
         {
-            AddressableManager.Instance.ReleaseObj(obj);
+            AddressableManager.Instance.Destroy(obj);
         }
         objList[n].Clear();
     }
@@ -183,6 +190,82 @@ public class GameManager : MonoBehaviour
     {
         currentHands.Remove(u);
     }
+
+    public void CallRPC(float[] num) //enum, line, 디버프 수치
+    {
+        pv.RPC("PDeBuff", RpcTarget.Others, num);
+    }
+    [PunRPC]
+    public void PDeBuff(float[] num)//enum받기
+    {
+        switch ((int)num[0]) //enum으로 디버프 종류 알려주기
+        {
+            case (int)EDeBuff.ATKDOWN: //공격력 깍기
+                ATKDown(num);
+                break;
+            case (int)EDeBuff.ATKSPEEDDOWN://공격속도 줄이기
+                ATKSpeedDown(num);
+                break;
+            case (int)EDeBuff.BRINGANYWAY://상대 위치 바꾸기
+                BringAnyWay(num);
+                break;
+        }
+    }
+
+    private void BringAnyWay(float[] num)
+    {
+        List<int> ints = new List<int>();
+        for (int i = 0; i < 3; i++)
+        {
+            if (i != (int)num[1] && objList[i].Count < 4)
+            {
+                ints.Add(i);
+            }
+        }
+        int rand = UnityEngine.Random.Range(0, objList[(int)num[1]].Count);
+        GameObject temp = objList[(int)num[1]][rand];
+        switch (ints.Count)
+        {
+            case 0://자리 못바꿈
+                break;
+            case 1:
+                SwitchLine((int)num[1], ints[0], temp);
+                break;
+            case 2:
+                int random = UnityEngine.Random.Range(0, 100);
+                int num2 = random > 50 ? ints[0] : ints[1];
+                SwitchLine((int)num[1], num2, temp);
+                break;
+        }
+    }
+
+    private void SwitchLine(int num, int num2, GameObject temp)
+    {
+        //원래라인, 바꿀라인, 게임오브젝트
+        objList[num].Remove(temp);
+        objList[num2].Add(temp);
+        temp.transform.position = PhotonNetwork.IsMasterClient ? spawnPosition[num2] : spawnPosition[num2 + 3];
+        temp.GetComponent<UnitFSM>().GoToGoal();
+    }
+
+    private void ATKSpeedDown(float[] num)
+    {
+        foreach (GameObject obj in objList[(int)num[1]])
+        {
+            UnitObj unit = obj.GetComponent<UnitObj>();
+            unit.attackSpeed *= num[2];
+        }
+    }
+
+    private void ATKDown(float[] num)
+    {
+        foreach (GameObject obj in objList[(int)num[1]])
+        {
+            UnitObj unit = obj.GetComponent<UnitObj>();
+            unit.damage -= (int)num[2];
+        }
+    }
+
     void Start()
     {
         GoToLobbyBtn.onClick.AddListener(() =>

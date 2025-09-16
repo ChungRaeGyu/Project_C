@@ -5,7 +5,7 @@ public class Unit : ScriptableObject
 {
     public string unitName;
     public int cost;
-    public float damage;
+    public int damage;
     public float attackSpeed;
     public float speed;
     public string imagePath;

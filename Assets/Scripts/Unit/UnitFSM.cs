@@ -40,6 +40,7 @@ public class UnitFSM : MonoBehaviour
     {
         bounds = col.bounds;
         layerMask = LayerMask.GetMask("Obstacle"); //장애물 넣어주기
+        agent.speed = unitObj.speed;
         GoToGoal();
         //첫 시작은 해야지
     }
@@ -64,11 +65,11 @@ public class UnitFSM : MonoBehaviour
         //공격메서드
         //공격속도에 맞춰 공격 애니메이션 재생 및 데미지 주기, 어디에? 방해물에 공격자체는 또 그 오버렙으로 해버리고
         if (PhotonNetwork.Time < nextAttackTime) return; // 아직 쿨타임 남음  
-        nextAttackTime = PhotonNetwork.Time + unitObj.unit.attackSpeed;
-        obstacle.GetDamage(unitObj.unit.damage);
+        nextAttackTime = PhotonNetwork.Time + unitObj.attackSpeed;
+        obstacle.GetDamage(unitObj.damage);
     }
 
-    private void GoToGoal()
+    public void GoToGoal()
     {
         //장애물이 없어졌을때
         agent.SetDestination(GameManager.Instance.tPosition[unitObj.line].transform.position);

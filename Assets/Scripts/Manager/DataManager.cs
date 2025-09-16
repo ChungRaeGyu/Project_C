@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.UI;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public enum Deck
 {

@@ -18,7 +18,7 @@ public class CSVtoSO
             Unit unit = ScriptableObject.CreateInstance<Unit>();
             unit.unitName = splitData[0];
             unit.cost = int.Parse(splitData[1]);
-            unit.damage = float.Parse(splitData[2]);
+            unit.damage = int.Parse(splitData[2]);
             unit.attackSpeed = float.Parse(splitData[3]);
             unit.speed = float.Parse(splitData[4]);
             unit.imagePath = splitData[5];
