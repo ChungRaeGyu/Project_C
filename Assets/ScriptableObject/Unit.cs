@@ -8,5 +8,7 @@ public class Unit : ScriptableObject
     public int damage;
     public float attackSpeed;
     public float speed;
+    public float ability;
     public string imagePath;
+    public string abilityStr;
 }

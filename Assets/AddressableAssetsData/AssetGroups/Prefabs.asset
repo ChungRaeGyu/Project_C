@@ -15,8 +15,20 @@ MonoBehaviour:
   m_GroupName: Prefabs
   m_GUID: 1e3555f6fdd457e4fb1a4dc936afae4a
   m_SerializeEntries:
+  - m_GUID: 322a4479850b3874cbe2fd5ea7b91a60
+    m_Address: Assets/Prefabs/Unit/Fox.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4389bb6a01be01d4cb845ab2936dd8a9
     m_Address: Assets/Prefabs/GhostMonster.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5335cc6c9b7c964f92eba411852f524
+    m_Address: Assets/Prefabs/Unit/Hog.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

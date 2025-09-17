@@ -67,7 +67,6 @@ public class DataManager : MonoBehaviour
     public async Task ShowCard(Transform content, Unit unit)
     {
         //cardContent도 여러개를 받아 줘야한다.
-
         AsyncOperationHandle<Sprite> handle = await AddressableManager.Instance.LoadImage(unit.imagePath);
 
         GameObject obj = Instantiate(cardPrefab, content);

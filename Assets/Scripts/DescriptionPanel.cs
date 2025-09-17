@@ -25,6 +25,6 @@ public class DescriptionPanel : MonoBehaviour
     public void init()
     {
         image.sprite = sprite;
-        descriptionText.text = $"이름 : {unit.unitName}\n비용 : {unit.cost}\n공격력 : {unit.damage}\n공격속도 : {unit.attackSpeed}\n이동속도 : {unit.speed}";
+        descriptionText.text = $"이름 : {unit.unitName}\n비용 : {unit.cost}\n공격력 : {unit.damage}\n공격속도 : {unit.attackSpeed}\n이동속도 : {unit.speed}\n 효과 : {unit.abilityStr}";
     }
 }

@@ -4,16 +4,31 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class GhostObject : MonoBehaviour
 {
     [HideInInspector]
     public Card card;
+    private SkinnedMeshRenderer skinnedMeshRenderer;
     Color red = new Color(1f, 0f, 0f, 0.2f);
     Color origin;
-    private void Start()
+
+    public AsyncOperationHandle handle;
+
+    private void Awake()
     {
-        origin = GetComponent<Renderer>().material.color;
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        origin = skinnedMeshRenderer.materials[0].color;
+    }
+
+    public void HandleInit()
+    {
+        AddressableManager.Instance.OnreleaseHandle += ReleaseAllObj;
+    }
+    public void ReleaseAllObj()
+    {
+        AddressableManager.Instance.ReleaseObj(handle);
     }
     private void Spawn()
     {
@@ -25,7 +40,9 @@ public class GhostObject : MonoBehaviour
         {
             //고스트 삭제, 유닛 소환
             //GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
-            GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", transform.position, Quaternion.identity);
+            Debug.Log("[INSTANTIATE] Pool = " + (PhotonNetwork.PrefabPool?.GetType().FullName ?? "NULL"));
+            Debug.Log("[INSTANTIATE] InRoom=" + PhotonNetwork.InRoom);
+            GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/Unit/{card.unit.unitName}.prefab", transform.position, Quaternion.identity);
             UnitObj unitObj = obj.GetComponent<UnitObj>();
             unitObj.Init(line, card.unit.unitName, card.unit.cost, card.unit.damage, card.unit.attackSpeed, card.unit.speed);
             GameManager.Instance.LindAdd(obj, line);
@@ -41,7 +58,7 @@ public class GhostObject : MonoBehaviour
             //
             Debug.Log("놓을 수 없는 곳입니다.");
         }
-        AddressableManager.Instance.ReleaseObj(this.gameObject); //고스트 삭제
+        AddressableManager.Instance.ReleaseObj(handle); //고스트 삭제
 
     }
 
@@ -81,18 +98,17 @@ public class GhostObject : MonoBehaviour
         }
         if (CanPlaced(transform.position, GetLine()))
         {
-            GetComponent<Renderer>().material.color = origin;
+            skinnedMeshRenderer.materials[0].color = origin;
         }
         else
         {
-            GetComponent<Renderer>().material.color = red;
+            skinnedMeshRenderer.materials[0].color = red;
         }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            Spawn();
-        }
+            if (Input.GetMouseButtonUp(0))
+            {
+                Spawn();
+            }
+        //여기서 일단 드래그 중인걸 표현하고? PointerUp하면 실제 소환하는 거다.
+        //마우스 따라오기 PointerUp이 필요하네
     }
-    //여기서 일단 드래그 중인걸 표현하고? PointerUp하면 실제 소환하는 거다.
-    //마우스 따라오기 PointerUp이 필요하네
 }

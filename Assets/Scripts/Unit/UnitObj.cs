@@ -1,5 +1,7 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class UnitObj : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class UnitObj : MonoBehaviour
     [HideInInspector] public float attackSpeed;
     [HideInInspector] public float speed;
     [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] public AsyncOperationHandle handle;
 
     private void Awake()
     {
@@ -28,5 +31,14 @@ public class UnitObj : MonoBehaviour
         this.damage = damage;
         this.attackSpeed = attackSpeed;
         this.speed = speed;
+    }
+
+    public void HandleInit()
+    {
+        AddressableManager.Instance.OnreleaseHandle += Remove;
+    }
+    public void Remove()
+    {
+        PhotonNetwork.Destroy(this.gameObject);
     }
 }

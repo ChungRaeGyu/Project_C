@@ -1337,15 +1337,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstDeck:
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
+  - {fileID: 11400000, guid: 8fb8123a91f1a6845a6ca58b9993ab6d, type: 2}
   secondDeck:
-  - {fileID: 11400000, guid: b63d175f93d30a545827964da8c4d5c7, type: 2}
+  - {fileID: 11400000, guid: 8fb8123a91f1a6845a6ca58b9993ab6d, type: 2}
   thiredDeck:
-  - {fileID: 11400000, guid: c12a545be83e436428777974e06b99d6, type: 2}
+  - {fileID: 11400000, guid: 8fb8123a91f1a6845a6ca58b9993ab6d, type: 2}
   cardPrefab: {fileID: 7877361441118220407, guid: cc8936c17907f1e408e6383d74824d27, type: 3}
   descriptionPanel: {fileID: 286521371}
   deckIndex: 0

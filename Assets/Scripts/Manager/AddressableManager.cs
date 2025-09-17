@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -16,8 +17,6 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
     public static AddressableManager Instance;
     public event Action OnreleaseHandle;
 
-    Dictionary<GameObject,AsyncOperationHandle<GameObject>> objHandles = new Dictionary<GameObject, AsyncOperationHandle<GameObject>>();
-
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
@@ -30,21 +29,16 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
         await handle.Task;
         return handle;
     }
-    public async Task<GameObject> Instantiate(string path, Transform parent = null)
+    public async Task<AsyncOperationHandle<GameObject>> Instantiate(string path, Transform parent = null)
     {
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(path, parent);
         GameObject loadedObject = await handle.Task;
-
-
-        objHandles.Add(loadedObject,handle);
-
-        return loadedObject;
+        return handle;
     }
-    public void ReleaseObj(GameObject obj)
+    public void ReleaseObj(AsyncOperationHandle obj)
     {
         //유닛 삭제 됌
         Addressables.ReleaseInstance(obj);
-        objHandles.Remove(obj);
     }
     public void ReleaseImage(AsyncOperationHandle handle)
     {
@@ -54,32 +48,49 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
     public void ReleaseAll()
     {
         OnreleaseHandle?.Invoke();
-        foreach (var handle in objHandles)
-        {
-            Addressables.ReleaseInstance(handle.Value);
-        }
-        objHandles.Clear();
     }
-    #region 포톤네트워크와의 연계를 위한
+
     public GameObject Instantiate(string path, Vector3 position, Quaternion rotation)
     {
+        Debug.Log("실행");
         // Addressables 키/주소가 prefabId라고 가정
         var handle = Addressables.InstantiateAsync(path, position, rotation, null);
 
         // 동기 대기 (간단하지만 hitch 가능)
         handle.WaitForCompletion();
-
         var go = handle.Result;
-        objHandles.Add(go, handle);
+        UnitObj unitobj = go.GetComponent<UnitObj>();
+        unitobj.handle = handle;
+        unitobj.HandleInit();
         return go;
     }
 
     public void Destroy(GameObject gameObject)
     {
+        Addressables.ReleaseInstance(gameObject);
 
-        Addressables.ReleaseInstance(objHandles[gameObject]);
-        objHandles.Remove(gameObject);
     }
+    #region 포톤네트워크와의 연계를 위한
+    /*    public GameObject Instantiate(string path, Vector3 position, Quaternion rotation)
+        {
+            Debug.Log("실행");
+            // Addressables 키/주소가 prefabId라고 가정
+            var handle = Addressables.InstantiateAsync(path, position, rotation, null);
+
+            // 동기 대기 (간단하지만 hitch 가능)
+            handle.WaitForCompletion();
+            var go = handle.Result;
+            UnitObj unitobj = go.GetComponent<UnitObj>();
+            unitobj.handle = handle;
+            unitobj.HandleInit();
+            return go;
+        }*/
+
+    /*   public void Destroy(GameObject gameObject)
+       {
+
+           Addressables.ReleaseInstance(gameObject);
+       }*/
     #endregion
     /*  
 *  SO도 어드레서블을 사용해서 불러오려고 했었음  -> 근데 이게 용량이 크지 않는데 굳이 이럴 필요가 없다. 라는 결론

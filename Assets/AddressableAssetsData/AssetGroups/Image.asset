@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Image
   m_GUID: ed6fdb03f94aa4847a205c89ec3fbeca
   m_SerializeEntries:
+  - m_GUID: 45a95a4ee10fd0040bb441a15321f360
+    m_Address: Assets/Images/Unit/Fox.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 518c3d1850a549940bc985f584c454b1
     m_Address: Assets/Images/FirstDeck.png
     m_ReadOnly: 0
@@ -35,6 +41,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8f284f62998ff6249b2eb18143024270
     m_Address: Assets/Images/SecondDeck.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98133249ab2471a4cbe2895d582ff17c
+    m_Address: Assets/Images/Unit/Hog.png
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

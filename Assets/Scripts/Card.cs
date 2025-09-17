@@ -21,7 +21,6 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private Sprite sprite;
 
     private bool initialized = false;
-    private GameObject ghostObject;   // 소환할 오브젝트
     public float holdTime = 1.0f;      // 몇 초 이상 눌러야 하는지
 
     private bool isPressed = false;
@@ -87,12 +86,16 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     }
 
-    private async void SpawnGhostObject()
+    private async Task SpawnGhostObject()
     {
         image.enabled = false;
-        string path = $"Assets/Prefabs/Ghost{unit.unitName}.prefab";
-        ghostObject = await AddressableManager.Instance.Instantiate(path);
-        ghostObject.GetComponent<GhostObject>().card = this;
+        string path = $"Assets/Prefabs/Ghost/{unit.unitName}.prefab";
+        var handle = await AddressableManager.Instance.Instantiate(path);
+        GameObject ghostObject = await handle.Task;
+        GhostObject script = ghostObject.GetComponent<GhostObject>();
+        script.card = this;
+        script.handle = handle;
+        script.HandleInit();
         Debug.Log("Object Spawned!");
     }
 

@@ -112,7 +112,8 @@ public class GameManager : MonoBehaviour
         lineBool[n] = false; //∂Û¿Œ¥›±‚
         foreach (var obj in objList[n])
         {
-            AddressableManager.Instance.Destroy(obj);
+            //AddressableManager.Instance.Destroy(obj);
+            PhotonNetwork.Destroy(obj.gameObject);
         }
         objList[n].Clear();
     }
