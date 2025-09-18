@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Obstacle : MonoBehaviour
 {
-    float hp = 10;
+    public float hp = 10;
     [SerializeField]Slider hpSlider;
     public event Action dieEvent;
     [SerializeField] TMP_Text text;
@@ -31,7 +31,7 @@ public class Obstacle : MonoBehaviour
     public void GetDamage(float damage)
     {
         Debug.Log("공격");
-        pv.RPC("PGetDamage", RpcTarget.AllBuffered, damage);
+        pv.RPC("PGetDamage", RpcTarget.All, damage);
         if (hp < 0)
         {
             Die();//따로 해주는 이유 transform자체는 원래 공유할꺼니까 navi설정은 본체에서만 해주면 된다. 
@@ -42,15 +42,11 @@ public class Obstacle : MonoBehaviour
     {
         Debug.Log("피해를 입음 : " + hp + " 데미지 : " + damage);
         hp -= damage;
-        if (hp < 0)
-        {
-            Destroy(gameObject);
-        }
     }
     private void Die()
     {
         dieEvent?.Invoke(); //골을 향해 가도록 하기
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
         //죽으면서 죽었다고 자기를 때리고 있는 오브젝트에게 모두 알려줘야함
         //사라지기 그그 Addressable사용해서 없어지면 될꺼같아
     }

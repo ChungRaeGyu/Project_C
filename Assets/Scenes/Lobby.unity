@@ -1337,7 +1337,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstDeck:
+  - {fileID: 11400000, guid: 6ff9285d438ddd240a466c859e5ffd3a, type: 2}
+  - {fileID: 11400000, guid: 8d873180d27fd83419142dff4de6d85a, type: 2}
+  - {fileID: 11400000, guid: 0b123699062562e46869d767ab634de4, type: 2}
+  - {fileID: 11400000, guid: b241983a82ab71b41b48fa99bf86f330, type: 2}
   - {fileID: 11400000, guid: 8fb8123a91f1a6845a6ca58b9993ab6d, type: 2}
+  - {fileID: 11400000, guid: d6d51ff87f09ebf40842bde0f16a032c, type: 2}
+  - {fileID: 11400000, guid: 974b77b1bdafa7d4d957e55cc861308f, type: 2}
+  - {fileID: 11400000, guid: 3811df57dfedc784aaeecc6c82b339db, type: 2}
+  - {fileID: 11400000, guid: 9b0a0e14cdd822140975892528af9d6f, type: 2}
+  - {fileID: 11400000, guid: 82905db0bbfbdab459b3ecc6b8002b5d, type: 2}
+  - {fileID: 11400000, guid: 4ace8da6c7b11fc45886cc20b663abb7, type: 2}
+  - {fileID: 11400000, guid: d65ae35ee69a6db48b57ac48d2008353, type: 2}
   secondDeck:
   - {fileID: 11400000, guid: 8fb8123a91f1a6845a6ca58b9993ab6d, type: 2}
   thiredDeck:
@@ -1618,7 +1629,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cb09b9aa47071d64783231e1d7f583f0, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1684,7 +1695,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1594544635

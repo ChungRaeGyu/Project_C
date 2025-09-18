@@ -39,9 +39,6 @@ public class GhostObject : MonoBehaviour
         if (CanPlaced(transform.position,line))
         {
             //고스트 삭제, 유닛 소환
-            //GameObject obj= await AddressableManager.Instance.Instantiate($"Assets/Prefabs/{card.unit.unitName}.prefab", null); //유닛 소환
-            Debug.Log("[INSTANTIATE] Pool = " + (PhotonNetwork.PrefabPool?.GetType().FullName ?? "NULL"));
-            Debug.Log("[INSTANTIATE] InRoom=" + PhotonNetwork.InRoom);
             GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/Unit/{card.unit.unitName}.prefab", transform.position, Quaternion.identity);
             UnitObj unitObj = obj.GetComponent<UnitObj>();
             unitObj.Init(line, card.unit.unitName, card.unit.cost, card.unit.damage, card.unit.attackSpeed, card.unit.speed);

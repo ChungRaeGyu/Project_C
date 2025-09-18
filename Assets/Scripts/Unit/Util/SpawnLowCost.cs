@@ -13,12 +13,11 @@ public class SpawnLowCost : UnitObj
         {
             if (i != line && GameManager.Instance.objList[i].Count<4)
             {
-                GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/{babyWolf.unitName}.prefab", transform.position, Quaternion.identity);
+                GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/Unit/{babyWolf.unitName}.prefab", transform.position, Quaternion.identity);
                 UnitObj unitObj = obj.GetComponent<UnitObj>();
                 unitObj.Init(line, babyWolf.unitName, babyWolf.cost, babyWolf.damage, babyWolf.attackSpeed, babyWolf.speed);
                 GameManager.Instance.LindAdd(obj, i);
                 obj.transform.position = PhotonNetwork.IsMasterClient?GameManager.Instance.spawnPosition[i]: GameManager.Instance.spawnPosition[i+3];
-
                 //소환위치
             }
         }   

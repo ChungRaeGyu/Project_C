@@ -17,4 +17,6 @@ MonoBehaviour:
   damage: 7
   attackSpeed: 1
   speed: 1.5
+  ability: 0
   imagePath: Assets/Images/Unit/Fox.png
+  abilityStr: 

@@ -57,12 +57,19 @@ public class GameManager : MonoBehaviour
     [HideInInspector] 
     public bool[] lineBool = new bool[]{ true, true, true };
     [HideInInspector]
-    public Vector3[] spawnPosition = new Vector3[] {new Vector3(-5,0,-15),new Vector3(0,0,-15),new Vector3(4,0,-15), new Vector3(-5, 0, 15), new Vector3(0, 0, 15), new Vector3(4, 0, 15) };
+    public Vector3[] spawnPosition = new Vector3[] {new Vector3(-4,0,-7),new Vector3(0,0,-7),new Vector3(4,0,-7), new Vector3(-4, 0, 22), new Vector3(0, 0, 22), new Vector3(4, 0, 22) };
     public Transform[] tPosition; //탑의 위치 값으로 쓰면 되겠다
 
+    Camera cam;
+    Vector3 masterCamera = new Vector3(-0.43f, 20.92f, -15.72f);
+    Vector3 slaveCamera = new Vector3(-0.43f, 20.92f, 29.5f);
+    
+    
     //UI
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private TMP_Text CostText;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
@@ -72,7 +79,16 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         pv = GetComponent<PhotonView>();
-
+        cam = Camera.main;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            cam.transform.position = masterCamera;
+        }
+        else
+        {
+            cam.transform.position = slaveCamera;
+            cam.transform.rotation = Quaternion.Euler(45, 180, 0); 
+        }
     }
     public void LindAdd(GameObject obj,int n)
     {

@@ -17,4 +17,7 @@ MonoBehaviour:
   damage: 3
   attackSpeed: 0.5
   speed: 2
+  ability: 2
   imagePath: Assets/Images/Unit/Cat.png
+  abilityStr: "\uD604\uC7AC \uD544\uB4DC\uC704\uC5D0 \uACF5\uACA9\uB825 \uBC84\uD504
+    +2"

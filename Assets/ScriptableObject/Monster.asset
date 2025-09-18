@@ -17,4 +17,6 @@ MonoBehaviour:
   damage: 1
   attackSpeed: 1
   speed: 1
+  ability: 0
   imagePath: Assets/Images/Unit/Monster.png
+  abilityStr: 

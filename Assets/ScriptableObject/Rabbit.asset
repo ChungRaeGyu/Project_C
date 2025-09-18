@@ -17,4 +17,7 @@ MonoBehaviour:
   damage: 2
   attackSpeed: 1
   speed: 1
+  ability: 1
   imagePath: Assets/Images/Unit/Rabbit.png
+  abilityStr: "\uC0C1\uB300\uC758 \uB79C\uB364 \uBAAC\uC2A4\uD130 \uB2E4\uB978\uB77C\uC778\uC73C\uB85C
+    \uC774\uB3D9"

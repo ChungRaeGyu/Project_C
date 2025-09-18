@@ -17,4 +17,6 @@ MonoBehaviour:
   damage: 6
   attackSpeed: 0.5
   speed: 2
+  ability: 0
   imagePath: Assets/Images/Unit/Deer.png
+  abilityStr: 

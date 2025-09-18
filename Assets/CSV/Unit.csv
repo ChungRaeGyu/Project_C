@@ -1,7 +1,7 @@
 ﻿Name,Cost,Damage,AttackSpeed,Speed,ability,ImagePath,능력여부,DPS,DPS_PerCost
 Monster,1,1,1,1,0,Assets/Images/Unit/Monster.png,,1,1
 Monster1,1,2,3,2,0,Assets/Images/Unit/Monster1.png,,0.666666667,0.666666667
-Squirrel,1,1,1,1,0,Assets/Images/Unit/Squirrel.png,,1,1
+Mouse,1,1,1,1,0,Assets/Images/Unit/Mouse.png,,1,1
 Hog,1,2,1.5,0.5,0,Assets/Images/Unit/Hog.png,,1.333333333,1.333333333
 WolfBaby,1,2,1,1.5,0,Assets/Images/Unit/WolfBaby.png,,2,2
 Raccoon,2,4,1,1.2,0,Assets/Images/Unit/Raccoon.png,,4,2
@@ -9,7 +9,7 @@ Rabbit,2,2,1,1,1,Assets/Images/Unit/Rabbit.png,상대의 랜덤 몬스터 다른
 Cat,3,3,0.5,2,2,Assets/Images/Unit/Cat.png,현재 필드위에 공격력 버프 +2,6,2
 Fox,3,7,1,1.5,0,Assets/Images/Unit/Fox.png,,7,2.333333333
 Snake,3,3,1,1.5,2,Assets/Images/Unit/Snake.png,디버프 상대 라인 공격력 저하 -2,3,1
-Bear,4,18,2,1.5,0,Assets/Images/Unit/Bear.png,,9,2.25
+Bear,4,18,2,1.5,0,Assets/Images/Unit/Bear.png,x,9,2.25
 WolfKing,4,9,1,2,0,Assets/Images/Unit/WolfKing.png,다른필드위에 WolfBaby소환,9,2.25
 Deer,6,6,0.5,2,0,Assets/Images/Unit/Deer.png,,12,2
 Tiger,8,9,0.7,2,0,Assets/Images/Unit/Tiger.png,다른필드의 저코스트 모두 흡수,12.85714286,1.607142857

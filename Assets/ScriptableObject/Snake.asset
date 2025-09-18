@@ -17,4 +17,7 @@ MonoBehaviour:
   damage: 3
   attackSpeed: 1
   speed: 1.5
+  ability: 2
   imagePath: Assets/Images/Unit/Snake.png
+  abilityStr: "\uB514\uBC84\uD504 \uC0C1\uB300 \uB77C\uC778 \uACF5\uACA9\uB825 \uC800\uD558
+    -2"

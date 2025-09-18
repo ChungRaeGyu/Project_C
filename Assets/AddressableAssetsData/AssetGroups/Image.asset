@@ -15,6 +15,27 @@ MonoBehaviour:
   m_GroupName: Image
   m_GUID: ed6fdb03f94aa4847a205c89ec3fbeca
   m_SerializeEntries:
+  - m_GUID: 178174a3f41d6a746afc0b5223417fcf
+    m_Address: Assets/Images/Unit/Rabbit.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 197cc580af5a6ac40a5dfa19b03e1045
+    m_Address: Assets/Images/Unit/WolfBaby.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 377ff370d492a0740a32ead5777dc6e1
+    m_Address: Assets/Images/Unit/Bear.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3fd22f9845f5de64798025fe916f542f
+    m_Address: Assets/Images/Unit/WolfKing.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 45a95a4ee10fd0040bb441a15321f360
     m_Address: Assets/Images/Unit/Fox.png
     m_ReadOnly: 0
@@ -26,6 +47,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51c5a9e67a849304eaa867fab5fd81f2
+    m_Address: Assets/Images/Unit/Cat.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 54c415d9433dd414bbe8a8a845cbe710
     m_Address: Assets/Images/Monster1.png
@@ -51,17 +77,42 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f3a5e0df3dcf1247b11ca362acafd63
+    m_Address: Assets/Images/Unit/Raccoon.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae6155334fdbf5c4e984fcda3877b532
+    m_Address: Assets/Images/Unit/Snake.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b112848741545d8488ab392b61d8d9a3
     m_Address: Assets/Images/O.png
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b21cf0e5ec0e15046a07bb71a9923bfd
+    m_Address: Assets/Images/Unit/Tiger.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b73a4f184de83134e97ed4011eb55016
+    m_Address: Assets/Images/Unit/Mouse.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c7b01676b65f93648924fcc9da9c67f6
     m_Address: Assets/Images/Monster.png
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d20969f0987cc69438f958aa312517d7
+    m_Address: Assets/Images/Unit/Deer.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d78e2401edfa0a84e893ce1745d54a00
     m_Address: Assets/Images/X.png

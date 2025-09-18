@@ -67,10 +67,17 @@ public class UnitFSM : MonoBehaviour
     {
         //공격메서드
         //공격속도에 맞춰 공격 애니메이션 재생 및 데미지 주기, 어디에? 방해물에 공격자체는 또 그 오버렙으로 해버리고
-        if (PhotonNetwork.Time < nextAttackTime) return; // 아직 쿨타임 남음  
-        animator.SetTrigger("Attack");
-        nextAttackTime = PhotonNetwork.Time + unitObj.attackSpeed;
-        obstacle.GetDamage(unitObj.damage);
+        if (PhotonNetwork.Time < nextAttackTime) {
+            return;
+        }
+        else
+        {
+            nextAttackTime = PhotonNetwork.Time + unitObj.attackSpeed;
+            Debug.Log("공격");
+            animator.SetTrigger("Attack");
+            obstacle.GetDamage(unitObj.damage);
+        }  // 아직 쿨타임 남음  
+            
     }
 
     public void GoToGoal()
