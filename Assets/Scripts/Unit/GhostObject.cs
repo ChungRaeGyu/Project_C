@@ -46,6 +46,7 @@ public class GhostObject : MonoBehaviour
             obj.transform.position = transform.position;
             GameManager.Instance.cost -= card.unit.cost;
             card.CardRemove(); //카드 삭제
+            GameManager.Instance.DrawCard();
             //카드 삭제
         }
         else

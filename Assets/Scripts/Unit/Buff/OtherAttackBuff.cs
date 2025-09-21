@@ -6,6 +6,8 @@ public class OtherAttackBuff : UnitObj
     [SerializeField] private int plusDamage = 1;
     void Start()
     {
+        if (!pv.IsMine) return;
+
         for (int i = 0; i < 3; i++)
         {
             if (i != line)

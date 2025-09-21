@@ -8,7 +8,9 @@ public class Consume : UnitObj
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        for(int i=0; i < 3; i++)
+        if (!pv.IsMine) return;
+
+        for (int i=0; i < 3; i++)
         {
             if (i != line)
             {

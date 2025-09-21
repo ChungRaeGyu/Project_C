@@ -10,6 +10,7 @@ public class SpeedBuff : UnitObj
     [SerializeField] float movSpeed = 1.2f;
     void Start()
     {
+        if (!pv.IsMine) return;
         //같은 라인의 모든 유닛의 이동속도를 상승시킨다. 20퍼 상승
         foreach (GameObject obj in GameManager.Instance.objList[line])
         {

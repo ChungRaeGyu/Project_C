@@ -8,6 +8,7 @@ public class AttackSpeedDeBuff : UnitObj
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (!pv.IsMine) return;
         GameManager.Instance.CallRPC(new float[] { (int)EDeBuff.ATKDOWN, line, 1-atkSpeedDown });
     }
 }

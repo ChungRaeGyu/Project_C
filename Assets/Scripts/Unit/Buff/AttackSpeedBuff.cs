@@ -9,6 +9,8 @@ public class AttackSpeedBuff : UnitObj
     [SerializeField] float atkSpeed = 1.2f;
     void Start()
     {
+        if (!pv.IsMine) return;
+
         foreach (GameObject obj in GameManager.Instance.objList[line])
         {
             UnitObj unit = obj.GetComponent<UnitObj>();

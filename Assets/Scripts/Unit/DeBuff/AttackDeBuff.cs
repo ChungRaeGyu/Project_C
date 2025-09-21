@@ -6,6 +6,8 @@ public class AttackDeBuff : UnitObj
     [SerializeField] int dmgDown=2;
     void Start()
     {
+        if (!pv.IsMine) return;
+
         GameManager.Instance.CallRPC(new float[] {(int)EDeBuff.ATKDOWN,line, dmgDown});   
     }
 }

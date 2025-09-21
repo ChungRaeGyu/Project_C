@@ -56,8 +56,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject>[] objList = { new List<GameObject>(), new List<GameObject>(), new List<GameObject>() };
     [HideInInspector] 
     public bool[] lineBool = new bool[]{ true, true, true };
-    [HideInInspector]
-    public Vector3[] spawnPosition = new Vector3[] {new Vector3(-4,0,-7),new Vector3(0,0,-7),new Vector3(4,0,-7), new Vector3(-4, 0, 22), new Vector3(0, 0, 22), new Vector3(4, 0, 22) };
+
+    public Transform[] spawnPosition;
     public Transform[] tPosition; //탑의 위치 값으로 쓰면 되겠다
 
     Camera cam;
@@ -89,6 +89,12 @@ public class GameManager : MonoBehaviour
             cam.transform.position = slaveCamera;
             cam.transform.rotation = Quaternion.Euler(45, 180, 0); 
         }
+
+        if (PhotonNetwork.OfflineMode)
+        {
+            Debug.Log("오프라인 끄기");
+            PhotonNetwork.OfflineMode = false;
+        }
     }
     public void LindAdd(GameObject obj,int n)
     {
@@ -116,6 +122,7 @@ public class GameManager : MonoBehaviour
     {
         //탑에서 호출
         occupation--;
+        Debug.Log("점령완료 : " + occupation);
         pv.RPC("LineClose", RpcTarget.All,num);
         CheckWinner();
     }
@@ -189,7 +196,7 @@ public class GameManager : MonoBehaviour
     {
         //Enable떄 init()을 해버려도 될
     }
-    private async Task DrawCard()
+    public async Task DrawCard()
     {
         //카드 뽑기
         if(currentDeck.Count == 0)
@@ -231,6 +238,7 @@ public class GameManager : MonoBehaviour
 
     private void BringAnyWay(float[] num)
     {
+        Debug.Log("옮김 당함");
         List<int> ints = new List<int>();
         for (int i = 0; i < 3; i++)
         {
@@ -239,8 +247,13 @@ public class GameManager : MonoBehaviour
                 ints.Add(i);
             }
         }
+        if (objList[(int)num[1]].Count == 0)
+        {
+            return;
+        }
         int rand = UnityEngine.Random.Range(0, objList[(int)num[1]].Count);
-        GameObject temp = objList[(int)num[1]][rand];
+        GameObject temp = objList[(int)num[1]][rand]; //index outRange 261000
+        Debug.Log($"rand : {rand}, ints.Count : {ints.Count}, ints[0] : {ints[0]}");
         switch (ints.Count)
         {
             case 0://자리 못바꿈
@@ -261,8 +274,11 @@ public class GameManager : MonoBehaviour
         //원래라인, 바꿀라인, 게임오브젝트
         objList[num].Remove(temp);
         objList[num2].Add(temp);
-        temp.transform.position = PhotonNetwork.IsMasterClient ? spawnPosition[num2] : spawnPosition[num2 + 3];
-        temp.GetComponent<UnitFSM>().GoToGoal();
+        UnitFSM fsm = temp.GetComponent<UnitFSM>();
+        fsm.agent.enabled = false;
+        temp.transform.position = PhotonNetwork.IsMasterClient ? spawnPosition[num2].position : spawnPosition[num2 + 3].position;
+        fsm.agent.enabled = true;
+        fsm.GoToGoal();
     }
 
     private void ATKSpeedDown(float[] num)

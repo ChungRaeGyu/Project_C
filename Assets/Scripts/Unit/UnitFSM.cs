@@ -20,8 +20,8 @@ public class UnitFSM : MonoBehaviour
     Collider[] searchCo = new Collider[10];
 
     private LayerMask layerMask;
-
-    private NavMeshAgent agent; //여기서 속도 조절 해줘야한다.
+    [HideInInspector]
+    public NavMeshAgent agent; //여기서 속도 조절 해줘야한다.
     private UnitObj unitObj; //나중에 직렬화 없애줄꺼임
     private bool target = false;
 
@@ -30,6 +30,8 @@ public class UnitFSM : MonoBehaviour
     private Obstacle obstacle;
 
     private Animator animator;
+
+    private PhotonView pv;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -37,10 +39,17 @@ public class UnitFSM : MonoBehaviour
         col = GetComponent<Collider>();
         unitObj = GetComponent<UnitObj>();
         animator = GetComponent<Animator>();
+        pv = GetComponent<PhotonView>();
     }
 
     void Start()
     {
+        if (!pv.IsMine)
+        {
+            agent.enabled = false;
+            col.enabled = false;
+            return;
+        }
         bounds = col.bounds;
         layerMask = LayerMask.GetMask("Obstacle"); //장애물 넣어주기
         agent.speed = unitObj.speed;
@@ -52,6 +61,7 @@ public class UnitFSM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!pv.IsMine) return;
         switch (currentState)
         {
             case State.SEARCH:
@@ -73,7 +83,6 @@ public class UnitFSM : MonoBehaviour
         else
         {
             nextAttackTime = PhotonNetwork.Time + unitObj.attackSpeed;
-            Debug.Log("공격");
             animator.SetTrigger("Attack");
             obstacle.GetDamage(unitObj.damage);
         }  // 아직 쿨타임 남음  
@@ -97,6 +106,7 @@ public class UnitFSM : MonoBehaviour
             int count = Physics.OverlapSphereNonAlloc(transform.position, bounds.extents.magnitude * 2, searchCo, layerMask);
             if (count > 0)
             {
+
                 //장애물 발견, 장애물을 목표로 지정해주어야 한다. **이거 나중에 포지션값때매 정중앙으로 모일꺼 같아**
                 target = agent.SetDestination(searchCo[0].transform.position);
             }
@@ -104,10 +114,12 @@ public class UnitFSM : MonoBehaviour
         else
         {
             //목표에 도착하면 
+
             if (agent.remainingDistance < bounds.extents.magnitude * 1.5f)
             {
                 agent.ResetPath();//목표 초기화 //그자리에 멈춘다.
                 target = false;
+                //여러마리를 설치하니까 여기서 null뜸
                 obstacle = searchCo[0].gameObject.GetComponent<Obstacle>();
                 obstacle.dieEvent += GoToGoal; //장애물이 사라졌을때 받을 이벤트
                 ChangeState(State.ATTACK);

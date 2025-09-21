@@ -30,7 +30,6 @@ public class Obstacle : MonoBehaviour
     }
     public void GetDamage(float damage)
     {
-        Debug.Log("공격");
         pv.RPC("PGetDamage", RpcTarget.All, damage);
         if (hp < 0)
         {
@@ -40,13 +39,16 @@ public class Obstacle : MonoBehaviour
     [PunRPC]
     public void PGetDamage(float damage)
     {
-        Debug.Log("피해를 입음 : " + hp + " 데미지 : " + damage);
         hp -= damage;
+        if (hp < 0)
+        {
+            Destroy(gameObject);
+        }
     }
     private void Die()
     {
         dieEvent?.Invoke(); //골을 향해 가도록 하기
-        PhotonNetwork.Destroy(gameObject);
+        
         //죽으면서 죽었다고 자기를 때리고 있는 오브젝트에게 모두 알려줘야함
         //사라지기 그그 Addressable사용해서 없어지면 될꺼같아
     }

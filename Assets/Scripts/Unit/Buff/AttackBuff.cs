@@ -6,6 +6,8 @@ public class AttackBuff : UnitObj
     [SerializeField] private int plusDamage = 1;
     void Start()
     {
+        if (!pv.IsMine) return;
+
         foreach (GameObject obj in GameManager.Instance.objList[line])
         {
             UnitObj unit = obj.GetComponent<UnitObj>();

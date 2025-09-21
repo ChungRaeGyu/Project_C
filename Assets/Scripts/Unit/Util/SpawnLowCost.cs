@@ -9,7 +9,9 @@ public class SpawnLowCost : UnitObj
     [SerializeField] Unit babyWolf;
     void Start()
     {
-        for(int i=0; i < 3; i++)
+        if (!pv.IsMine) return;
+
+        for (int i=0; i < 3; i++)
         {
             if (i != line && GameManager.Instance.objList[i].Count<4)
             {
@@ -17,7 +19,7 @@ public class SpawnLowCost : UnitObj
                 UnitObj unitObj = obj.GetComponent<UnitObj>();
                 unitObj.Init(line, babyWolf.unitName, babyWolf.cost, babyWolf.damage, babyWolf.attackSpeed, babyWolf.speed);
                 GameManager.Instance.LindAdd(obj, i);
-                obj.transform.position = PhotonNetwork.IsMasterClient?GameManager.Instance.spawnPosition[i]: GameManager.Instance.spawnPosition[i+3];
+                obj.transform.position = PhotonNetwork.IsMasterClient?GameManager.Instance.spawnPosition[i].position: GameManager.Instance.spawnPosition[i+3].position;
                 //소환위치
             }
         }   

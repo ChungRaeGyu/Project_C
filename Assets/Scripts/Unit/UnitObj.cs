@@ -17,10 +17,11 @@ public class UnitObj : MonoBehaviour
     [HideInInspector] public float speed;
     [HideInInspector] public NavMeshAgent agent;
     [HideInInspector] public AsyncOperationHandle handle;
-
+    protected PhotonView pv;
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        pv = GetComponent<PhotonView>();
     }
 
     public void Init(int line, string unitName, int cost, int damage, float attackSpeed, float speed)
