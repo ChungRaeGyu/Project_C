@@ -41,7 +41,7 @@ public class GhostObject : MonoBehaviour
             GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/Unit/{card.unit.unitName}.prefab", transform.position, Quaternion.identity);
             if (!PhotonNetwork.IsMasterClient) obj.transform.rotation = Quaternion.Euler(0, 180, 0);
             UnitObj unitObj = obj.GetComponent<UnitObj>();
-            unitObj.Init(line, card.unit.unitName, card.unit.cost, card.unit.damage, card.unit.attackSpeed, card.unit.speed);
+            unitObj.InitRPC(line, card.unit.unitName, card.unit.cost, card.unit.damage, card.unit.attackSpeed, card.unit.speed);
             GameManager.Instance.LindAdd(obj, line);
             obj.transform.position = transform.position;
             GameManager.Instance.cost -= card.unit.cost;

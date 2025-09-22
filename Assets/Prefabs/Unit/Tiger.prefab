@@ -588,9 +588,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1538849076752165952}
   - component: {fileID: 8370864234181205906}
+  - component: {fileID: 5642473680876575246}
   - component: {fileID: 6362127858809132273}
   - component: {fileID: 8191803320303007775}
-  - component: {fileID: 5642473680876575246}
   - component: {fileID: 7172470882180965994}
   - component: {fileID: 2915256126602813162}
   - component: {fileID: 1163539163560768905}
@@ -641,6 +641,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45726234, y: 0.99999964, z: 1.3256426}
   m_Center: {x: -0.00603047, y: 0.4703728, z: -0.042212844}
+--- !u!114 &5642473680876575246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5690172571732946891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ce078c6cfd8e34495c696eb4b24e8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: 0
+  unitName: 
+  cost: 0
+  damage: 0
+  attackSpeed: 0
+  speed: 0
+  agent: {fileID: 0}
+  text: {fileID: 6378975794467989996}
 --- !u!114 &6362127858809132273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,26 +707,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
---- !u!114 &5642473680876575246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5690172571732946891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1ce078c6cfd8e34495c696eb4b24e8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  line: 0
-  unitName: 
-  cost: 0
-  damage: 0
-  attackSpeed: 0
-  speed: 0
-  agent: {fileID: 0}
-  text: {fileID: 0}
 --- !u!114 &7172470882180965994
 MonoBehaviour:
   m_ObjectHideFlags: 0

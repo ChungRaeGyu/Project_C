@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
 using System.Threading.Tasks;
+using Photon.Pun;
 
 public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -91,6 +92,7 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         string path = $"Assets/Prefabs/Ghost/{unit.unitName}.prefab";
         var handle = await AddressableManager.Instance.Instantiate(path);
         GameObject ghostObject = await handle.Task;
+        if (!PhotonNetwork.IsMasterClient) { ghostObject.transform.rotation = Quaternion.Euler(0, 180, 0); }
         GhostObject script = ghostObject.GetComponent<GhostObject>();
         script.card = this;
         script.handle = handle;

@@ -19,13 +19,19 @@ public class UnitObj : MonoBehaviour
     [HideInInspector] public NavMeshAgent agent;
     [HideInInspector] public AsyncOperationHandle handle;
     [SerializeField] TMP_Text text;
+    public RectTransform[] canvas;
     protected PhotonView pv;
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         pv = GetComponent<PhotonView>();
+        canvas = GetComponentsInChildren<RectTransform>();
     }
-
+    public void InitRPC(int line, string unitName, int cost, int damage, float attackSpeed, float speed)
+    {
+        pv.RPC("Init", RpcTarget.All, line, unitName, cost,damage,attackSpeed,speed);
+    }
+    [PunRPC]
     public void Init(int line, string unitName, int cost, int damage, float attackSpeed, float speed)
     {
         this.line = line;
@@ -34,12 +40,14 @@ public class UnitObj : MonoBehaviour
         this.damage = damage;
         this.attackSpeed = attackSpeed;
         this.speed = speed;
-        pv.RPC("UpdateUI", RpcTarget.Others);
-    }
-
-    public void UpdateUI()
-    {
         text.text = cost.ToString();
+        if (!pv.IsMine)
+        {
+            Vector3 rect = canvas[0].localScale;
+            rect.x *= -1;
+            canvas[0].localScale = rect;
+        }
+
     }
     public void HandleInit()
     {
