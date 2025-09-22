@@ -242,7 +242,7 @@ public class GameManager : MonoBehaviour
         List<int> ints = new List<int>();
         for (int i = 0; i < 3; i++)
         {
-            if (i != (int)num[1] && objList[i].Count < 4)
+            if (i != (int)num[1] && objList[i].Count < 4 && lineBool[i])
             {
                 ints.Add(i);
             }

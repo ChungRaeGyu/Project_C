@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -65,7 +66,7 @@ public class UnitFSM : MonoBehaviour
         switch (currentState)
         {
             case State.SEARCH:
-                Search();
+                StartCoroutine("Search");
                 break;
             case State.ATTACK:
                 Attack();
@@ -92,23 +93,26 @@ public class UnitFSM : MonoBehaviour
     public void GoToGoal()
     {
         //장애물이 없어졌을때
+        if(agent==null) return;
         agent.SetDestination(GameManager.Instance.tPosition[unitObj.line].transform.position);
-        Debug.Log("장애물 죽음");
         ChangeState(State.SEARCH);
+        Debug.Log("장애물없어짐");
     }
 
-    private void Search()
+    IEnumerator Search()
     {
+        yield return new WaitForEndOfFrame();
         animator.SetTrigger("Run");
         //장애물을 찾고 발견하면 부수고 지나가야 한다.
         if (!target)
         {
-            int count = Physics.OverlapSphereNonAlloc(transform.position, bounds.extents.magnitude * 2, searchCo, layerMask);
+            int count = Physics.OverlapSphereNonAlloc(transform.position, bounds.extents.magnitude, searchCo, layerMask);
             if (count > 0)
             {
 
                 //장애물 발견, 장애물을 목표로 지정해주어야 한다. **이거 나중에 포지션값때매 정중앙으로 모일꺼 같아**
                 target = agent.SetDestination(searchCo[0].transform.position);
+                Debug.Log(gameObject.name+"목표 발견 : " + target);
             }
         }
         else
@@ -119,14 +123,12 @@ public class UnitFSM : MonoBehaviour
             {
                 agent.ResetPath();//목표 초기화 //그자리에 멈춘다.
                 target = false;
-                //여러마리를 설치하니까 여기서 null뜸
                 obstacle = searchCo[0].gameObject.GetComponent<Obstacle>();
                 obstacle.dieEvent += GoToGoal; //장애물이 사라졌을때 받을 이벤트
                 ChangeState(State.ATTACK);
             }
-            
-        }
 
+        }
     }
     private void ChangeState(State state)
     {
@@ -137,7 +139,7 @@ public class UnitFSM : MonoBehaviour
     {
 
         // 코드에서 사용한 반지름 계산
-        float radius = bounds.extents.magnitude * 2;
+        float radius = bounds.extents.magnitude;
 
         // 구체 색상 설정
         Gizmos.color = Color.red;

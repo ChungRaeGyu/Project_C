@@ -47,20 +47,17 @@ public class RoomManager : MonoBehaviourPunCallbacks
     IEnumerator waitJoined()
     {
         yield return new WaitUntil(() => PhotonNetwork.InRoom);
-        Debug.Log(PhotonNetwork.PlayerList.Length);
         foreach(var player in PhotonNetwork.PlayerList)
         {
             if (player.CustomProperties.ContainsKey("Deck"))
             {
                 if (player.IsMasterClient)
                 {
-                    Debug.Log("마스터 클라이언트이미지");
 
                     _ = kindUI(0, (int)player.CustomProperties["Deck"]);
                 }
                 else
                 {
-                    Debug.Log("Slave 클라이언트이미지");
 
                     _ = kindUI(1, (int)player.CustomProperties["Deck"]);
                 }
@@ -91,11 +88,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     void StartBtn()
     {
-        Debug.Log($"[SYNC] IsMaster={PhotonNetwork.IsMasterClient}, " +
-          $"AutoSync={PhotonNetwork.AutomaticallySyncScene}, " +
-          $"InRoom={PhotonNetwork.InRoom}, " +
-          $"State={PhotonNetwork.NetworkClientState}, " +
-          $"MsgQueue={PhotonNetwork.IsMessageQueueRunning}");
         if (PhotonNetwork.AutomaticallySyncScene)
         {
             AddressableManager.Instance.ReleaseAll();
@@ -130,12 +122,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
             if (targetPlayer.IsMasterClient)
             {
                 _ = kindUI(0, (int)changedProps["Deck"]);
-                Debug.Log("마스터 클라이언트이미지");
             }
             else
             {
                 _ = kindUI(1, (int)changedProps["Deck"]);
-                Debug.Log("Slave 호출");
             }
         }
         if (!changedProps.ContainsKey(ReadyKey)) return;

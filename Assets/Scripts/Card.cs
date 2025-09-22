@@ -79,7 +79,6 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void ResetPress()
     {
-        Debug.Log("Reset Press");
         isPressed = false;
         pressTimer = 0f;
 
@@ -96,7 +95,6 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         script.card = this;
         script.handle = handle;
         script.HandleInit();
-        Debug.Log("Object Spawned!");
     }
 
     public void CardRemove()

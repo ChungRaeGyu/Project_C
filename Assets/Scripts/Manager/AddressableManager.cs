@@ -52,7 +52,6 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
 
     public GameObject Instantiate(string path, Vector3 position, Quaternion rotation)
     {
-        Debug.Log("실행");
         // Addressables 키/주소가 prefabId라고 가정
         var handle = Addressables.InstantiateAsync(path, position, rotation, null);
 

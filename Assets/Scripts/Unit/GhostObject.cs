@@ -1,5 +1,4 @@
 using Photon.Pun;
-using Photon.Pun.Demo.SlotRacer.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -40,6 +39,7 @@ public class GhostObject : MonoBehaviour
         {
             //고스트 삭제, 유닛 소환
             GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/Unit/{card.unit.unitName}.prefab", transform.position, Quaternion.identity);
+            if (!PhotonNetwork.IsMasterClient) obj.transform.rotation = Quaternion.Euler(0, 180, 0);
             UnitObj unitObj = obj.GetComponent<UnitObj>();
             unitObj.Init(line, card.unit.unitName, card.unit.cost, card.unit.damage, card.unit.attackSpeed, card.unit.speed);
             GameManager.Instance.LindAdd(obj, line);

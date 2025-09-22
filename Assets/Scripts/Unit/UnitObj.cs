@@ -1,4 +1,5 @@
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -8,15 +9,16 @@ public class UnitObj : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //여기는 효과를 적자 어때
     //얘를 상속받아서 효과를 쓰자
-
+    //
     [HideInInspector] public int line;
     [HideInInspector] public string unitName;
-    [HideInInspector] public int cost;
+    public int cost;
     [HideInInspector] public int damage;
     [HideInInspector] public float attackSpeed;
     [HideInInspector] public float speed;
     [HideInInspector] public NavMeshAgent agent;
     [HideInInspector] public AsyncOperationHandle handle;
+    [SerializeField] TMP_Text text;
     protected PhotonView pv;
     private void Awake()
     {
@@ -32,8 +34,13 @@ public class UnitObj : MonoBehaviour
         this.damage = damage;
         this.attackSpeed = attackSpeed;
         this.speed = speed;
+        pv.RPC("UpdateUI", RpcTarget.Others);
     }
 
+    public void UpdateUI()
+    {
+        text.text = cost.ToString();
+    }
     public void HandleInit()
     {
         AddressableManager.Instance.OnreleaseHandle += Remove;
