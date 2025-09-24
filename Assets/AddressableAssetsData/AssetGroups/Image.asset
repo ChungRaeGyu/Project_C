@@ -39,8 +39,7 @@ MonoBehaviour:
   - m_GUID: 45a95a4ee10fd0040bb441a15321f360
     m_Address: Assets/Images/Unit/Fox.png
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 518c3d1850a549940bc985f584c454b1
     m_Address: Assets/Images/FirstDeck.png

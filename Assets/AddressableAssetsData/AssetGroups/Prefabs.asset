@@ -63,12 +63,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cc8936c17907f1e408e6383d74824d27
-    m_Address: Assets/Prefab/Image.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Card
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d9c2492c5daa8ab408ce6603ccb41944
     m_Address: Assets/Prefabs/Unit/WolfKing.prefab
     m_ReadOnly: 0

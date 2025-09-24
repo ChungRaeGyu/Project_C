@@ -6,6 +6,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
 using System.Threading.Tasks;
 using Photon.Pun;
+using TMPro;
 
 public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -26,11 +27,11 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private bool isPressed = false;
     private float pressTimer = 0f;
-
+    [SerializeField] private TMP_Text text;
    
     public async Task Init(Unit u,DescriptionPanel desp, AsyncOperationHandle hand)
     {
-        image = GetComponent<Image>();
+        image = GetComponentInChildren<Image>();
         unit = u;
         descriptionPanel = desp;
         handle = hand;
@@ -38,6 +39,7 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         image.sprite = sprite;
         AddressableManager.Instance.OnreleaseHandle += ReleaseAllCardImage;
         initialized = true;
+        text.text = u.cost.ToString();
     }
     void Update()
     {
