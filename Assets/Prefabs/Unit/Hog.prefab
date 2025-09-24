@@ -83,6 +83,7 @@ MonoBehaviour:
   speed: 0
   agent: {fileID: 0}
   text: {fileID: 687299743160112124}
+  canvas: []
 --- !u!114 &-3631631339896447980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +131,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 288905456989716484}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.64
+  m_Radius: 0.3
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -142,7 +143,7 @@ NavMeshAgent:
   m_Height: 0.66
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
+  m_ObstacleAvoidanceType: 4
 --- !u!95 &7074621879648217766
 Animator:
   serializedVersion: 7

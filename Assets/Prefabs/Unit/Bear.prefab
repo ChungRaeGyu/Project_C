@@ -83,6 +83,7 @@ MonoBehaviour:
   speed: 0
   agent: {fileID: 0}
   text: {fileID: 39789344107363479}
+  canvas: []
 --- !u!114 &993414166246825843
 MonoBehaviour:
   m_ObjectHideFlags: 0

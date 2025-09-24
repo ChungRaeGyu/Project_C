@@ -325,6 +325,7 @@ MonoBehaviour:
   speed: 0
   agent: {fileID: 0}
   text: {fileID: 148813096006808016}
+  canvas: []
   plusDamage: 2
 --- !u!114 &3752366623353607978
 MonoBehaviour:
@@ -349,7 +350,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1027010945500489631}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -361,7 +362,7 @@ NavMeshAgent:
   m_Height: 0.86
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &6050498418812142162
 MonoBehaviour:
   m_ObjectHideFlags: 0

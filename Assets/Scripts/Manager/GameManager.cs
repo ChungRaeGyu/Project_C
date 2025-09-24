@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     private Queue<Unit> currentDeck; //이거에서 하나씩 빼서 쓰면 됨
     private List<Unit> currentHands = new List<Unit>(); //현재 손에 들고 있는 카드들
 
-    private int startHandCount = 5; //시작할 때 들고 있는 카드 수
+    private int startHandCount = 4; //시작할 때 들고 있는 카드 수
     [SerializeField] private Transform handParent; //손에 들고 있는 카드들 부모
 
     //인수
@@ -114,12 +114,13 @@ public class GameManager : MonoBehaviour
         }
 
         timeText.text = System.TimeSpan.FromSeconds(time).ToString(@"mm\:ss"); //시간 동기화
-        CostText.text = $"cost : {cost}";
+        CostText.text = $"{cost}";
 
     }
 
     public void Occupation(int num)
     {
+        
         //탑에서 호출
         occupation--;
         Debug.Log("점령완료 : " + occupation);

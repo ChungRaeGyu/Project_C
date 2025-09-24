@@ -12,7 +12,9 @@ public class Tower : MonoBehaviour
         if (other.CompareTag("Unit"))
         {
             Debug.Log("몬스터");
-            GameManager.Instance.Occupation(int.Parse(gameObject.name));
+            string name = gameObject.name;
+            char c = name[name.Length - 1];
+            GameManager.Instance.Occupation(int.Parse(c.ToString()));
         }
         //이게 끝이야??????
     }
