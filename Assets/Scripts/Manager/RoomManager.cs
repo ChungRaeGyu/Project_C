@@ -19,7 +19,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     [SerializeField] Image[] readyImage;
     [SerializeField] Image[] kindImage;  //어떤 덱인지 알려줄 꺼임
-    
+    [SerializeField] TMP_Text masterNickname;
+    [SerializeField] TMP_Text slaveNickname;
+
     public const string ReadyKey = "readyKey";
 
     private List<AsyncOperationHandle> handles = new List<AsyncOperationHandle>();
@@ -55,11 +57,12 @@ public class RoomManager : MonoBehaviourPunCallbacks
                 {
 
                     _ = kindUI(0, (int)player.CustomProperties["Deck"]);
+                    masterNickname.text = player.NickName;
                 }
                 else
                 {
-
                     _ = kindUI(1, (int)player.CustomProperties["Deck"]);
+                    slaveNickname.text = player.NickName;
                 }
             }
             else

@@ -43,6 +43,7 @@ public class Obstacle : MonoBehaviour
         if (hp < 0)
         {
             Destroy(gameObject);
+            Destroy(hpSlider.gameObject);
         }
     }
     private void Die()

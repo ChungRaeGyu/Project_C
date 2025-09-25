@@ -1,21 +1,23 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour
 {
     public Button quickMatchBtn;
     [Header("CardPanel")]
-    public Button cardCheckBtn;
-    public Button closeCardPanel;
     public GameObject cardPanel;
     public Transform cardContent;
     DataManager dataManager;
+    [SerializeField] private GameObject rankingPanel;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
         dataManager = DataManager.Instance;
-        
+
     }
 
     void Start()
@@ -24,10 +26,7 @@ public class LobbyManager : MonoBehaviour
         {
             NetworkManager.Instance.QuickMatchBtn();
         });
-        cardCheckBtn.onClick.AddListener(OpenCardBoard);
-        closeCardPanel.onClick.AddListener(OpenCardBoard);
 
-        //StartCoroutine(init());
         Init();
     }
 
@@ -48,10 +47,9 @@ public class LobbyManager : MonoBehaviour
         }
 
     }
-
-    private void OpenCardBoard()
+    public void ButtonRankingControl()
     {
-        cardPanel.SetActive(!cardPanel.activeSelf);
+        rankingPanel.SetActive(!rankingPanel.activeSelf);
     }
 
 }

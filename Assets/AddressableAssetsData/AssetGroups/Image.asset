@@ -58,6 +58,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62672896e71e0924ab5da8d2ccceaf91
+    m_Address: Assets/Images/X.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7952b4e993dd6574194b895f4d035b88
     m_Address: Assets/Images/ThirdDeck.png
     m_ReadOnly: 0
@@ -81,16 +86,15 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a97c531620a10e04caab2ef4a16ae363
+    m_Address: Assets/Images/O.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ae6155334fdbf5c4e984fcda3877b532
     m_Address: Assets/Images/Unit/Snake.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b112848741545d8488ab392b61d8d9a3
-    m_Address: Assets/Images/O.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b21cf0e5ec0e15046a07bb71a9923bfd
     m_Address: Assets/Images/Unit/Tiger.png
@@ -112,12 +116,6 @@ MonoBehaviour:
     m_Address: Assets/Images/Unit/Deer.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d78e2401edfa0a84e893ce1745d54a00
-    m_Address: Assets/Images/X.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5e31874c1bf2220419d4aed124553769, type: 2}

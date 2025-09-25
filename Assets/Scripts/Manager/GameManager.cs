@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
     //UI
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private TMP_Text CostText;
-
+    [SerializeField] private EndPanel EndPanel;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -152,13 +152,14 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         isStart = false;
+        EndPanel.gameObject.SetActive(true);
         if (occupation == 1)
         {
-            Debug.Log("½Â¸®");
+            EndPanel.Init(true);
         }
         else
         {
-            Debug.Log("ÆÐ¹è");
+            EndPanel.Init(false);
         }
     }
 
