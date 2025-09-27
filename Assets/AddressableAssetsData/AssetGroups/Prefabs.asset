@@ -32,6 +32,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58969698c84bda4439c5d56222b7c866
+    m_Address: Assets/Prefabs/Item.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 88a3b76239494624db86746c76e98605
     m_Address: Assets/Prefabs/Unit/Mouse.prefab
     m_ReadOnly: 0

@@ -155,10 +155,12 @@ public class GameManager : MonoBehaviour
         EndPanel.gameObject.SetActive(true);
         if (occupation == 1)
         {
+            PlayerData.Instance.AddScore(10);
             EndPanel.Init(true);
         }
         else
         {
+            PlayerData.Instance.AddScore(-10);
             EndPanel.Init(false);
         }
     }

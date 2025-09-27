@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "457451292147",
+    "project_id": "projectc-5f52a",
+    "storage_bucket": "projectc-5f52a.firebasestorage.app",
+    "firebase_url": "https://projectc-5f52a-default-rtdb.firebaseio.com/"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457451292147:android:024bc2601702283215be86",
+        "android_client_info": {
+          "package_name": "com.Chung.ProjectC"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGC4m-tWJFWLeXsslg1qiXQuK_joW5mvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
