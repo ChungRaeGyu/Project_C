@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class StartSceneManager : MonoBehaviour
 {
+
+    [SerializeField] TMP_InputField nickNameInput;
     [SerializeField] TMP_InputField emailInput;
     [SerializeField] TMP_InputField passInput;
-    [SerializeField] TMP_Text outputText;
+    [SerializeField] GameObject Siginpanel;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -14,18 +17,22 @@ public class StartSceneManager : MonoBehaviour
         FirebaseFireStoreManager.Instance.Init();
         FirebaseAuthManager.Instance.Init();
         FirebaseAuthManager.Instance.LoginState += OnChangedState;
+        FirebaseAuthManager.Instance.SignState += SetData;
     }
 
     private void OnChangedState(bool sign)
     {
-        outputText.text = sign ? "Login" : "LogOut";
-        //outputText.text += FirebaseAuthManager.Instance.UserId;
     }
     public void Create()
     {
         string e = emailInput.text;
         string p = passInput.text;
         FirebaseAuthManager.Instance.Creat(e, p);
+    }
+
+    private void SetData()
+    {
+        FirebaseFireStoreManager.Instance.WriteData(nickNameInput.text, emailInput.text, 0);
     }
     public void Login()
     {
@@ -35,6 +42,11 @@ public class StartSceneManager : MonoBehaviour
     public void LogOut()
     {
         FirebaseAuthManager.Instance.LogOut();
+    }
+
+    public void SiginPanelControl()
+    {
+        Siginpanel.SetActive(!Siginpanel.activeSelf);
     }
 
 }

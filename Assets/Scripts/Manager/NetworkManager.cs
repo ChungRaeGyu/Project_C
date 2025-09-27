@@ -8,7 +8,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 {
 
     public static NetworkManager Instance;
-    public TMP_InputField NickNameInput;
     bool reStart = false;
     string roomName="";
 
@@ -36,7 +35,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer.NickName.IsNullOrEmpty())
         {
-            PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
+            PhotonNetwork.LocalPlayer.NickName = PlayerData.Instance.GetNickName();
         }
         JoinLobby();
     }

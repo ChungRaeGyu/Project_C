@@ -21,6 +21,7 @@ public class FirebaseAuthManager
     public string UserId => user.UserId; //UserId를 반환하는 역할만 함(읽기전용)
 
     public Action<bool> LoginState;
+    public event Action SignState;
     public void Init()
     {
         auth = FirebaseAuth.DefaultInstance;
@@ -66,6 +67,7 @@ public class FirebaseAuthManager
             AuthResult result = task.Result;
             FirebaseUser newUser = result.User;
             Debug.LogError("회원가입 완료");
+            SignState?.Invoke();
         });
     }
     public void Login(string email, string password)
@@ -86,7 +88,7 @@ public class FirebaseAuthManager
             FirebaseUser newUser = result.User;
             Debug.LogError("로그인 완료");
 
-            FirebaseFireStoreManager.Instance.ReadData("null",UserId,0,true);
+            FirebaseFireStoreManager.Instance.ReadData();
 
             NetworkManager.Instance.ConnectBtn();//로그인 눌렀을때 다 데이터 넣고 씬넘기기
 

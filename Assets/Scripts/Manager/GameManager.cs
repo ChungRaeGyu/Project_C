@@ -57,6 +57,10 @@ public class GameManager : MonoBehaviour
     [HideInInspector] 
     public bool[] lineBool = new bool[]{ true, true, true };
 
+
+    [SerializeField] GameObject[] masterSpawn;
+    [SerializeField] GameObject[] slaveSpawn;
+
     public Transform[] spawnPosition;
     public Transform[] tPosition; //탑의 위치 값으로 쓰면 되겠다
 
@@ -80,6 +84,7 @@ public class GameManager : MonoBehaviour
 
         pv = GetComponent<PhotonView>();
         cam = Camera.main;
+        SpawnArea();
         if (PhotonNetwork.IsMasterClient)
         {
             cam.transform.position = masterCamera;
@@ -87,15 +92,25 @@ public class GameManager : MonoBehaviour
         else
         {
             cam.transform.position = slaveCamera;
-            cam.transform.rotation = Quaternion.Euler(45, 180, 0); 
+            cam.transform.rotation = Quaternion.Euler(45, 180, 0);
         }
-
         if (PhotonNetwork.OfflineMode)
         {
             Debug.Log("오프라인 끄기");
             PhotonNetwork.OfflineMode = false;
         }
     }
+
+    private void SpawnArea()
+    {
+        bool check = PhotonNetwork.IsMasterClient;
+        for (int i = 0; i < masterSpawn.Length; i++)
+        {
+            masterSpawn[i].SetActive(check);
+            slaveSpawn[i].SetActive(!check);
+        }
+    }
+
     public void LindAdd(GameObject obj,int n)
     {
         objList[n].Add(obj);

@@ -77,12 +77,12 @@ public class GhostObject : MonoBehaviour
         Debug.Log("µå·¡±×");
 
     }
-
+   
     private bool CanPlaced(Vector3 pos,int line)
     {
-        LayerMask buildBlockLayer = LayerMask.GetMask("Monster","Wall");
+        LayerMask buildBlockLayer = LayerMask.GetMask("Spawn");
         Collider[] colliders = Physics.OverlapSphere(pos, 0.5f, buildBlockLayer);
-        return colliders.Length == 0 && GameManager.Instance.lineBool[line] && GameManager.Instance.objList[line].Count < 4;
+        return colliders.Length != 0 && GameManager.Instance.lineBool[line] && GameManager.Instance.objList[line].Count < 4;
     }
 
     private void Update()

@@ -18,13 +18,11 @@ public class PlayerData
     private string id;
     private int score;
     private int currentScore;
-    private bool newPlayer;
-    public void Init(string n,string i,int s, bool b)
+    public void Init(string n,string i,int s)
     {
         nickName = n;
         id = i;
         score = s;
-        newPlayer = b;
         currentScore = score;
     }
     public string GetNickName()
@@ -38,10 +36,6 @@ public class PlayerData
     public int GetScore()
     {
         return score;
-    }
-    public bool GetBool()
-    {
-        return newPlayer;
     }
     public void AddScore(int s)
     {

@@ -31,7 +31,7 @@ public class FirebaseFireStoreManager
     }
     public void WriteData(string nickname,string userId, int sco)
     {
-        Debug.Log("데이터를 저장합니다.");
+        Debug.Log("데이터를 저장합니다.");   
         DocumentReference docRef = db.Collection(collection).
         Document(FirebaseAuthManager.Instance.UserId);
         Dictionary<string, object> data = new Dictionary<string, object>();
@@ -43,8 +43,11 @@ public class FirebaseFireStoreManager
         {
             Debug.Log("쓰기완료");
         });
+
+        Debug.Log("새로운 데이터 생성");
+        PlayerData.Instance.Init(nickname, userId, sco);
     }
-    public async void ReadData(string nickname, string userId, int sco,bool b)
+    public async void ReadData()
     {
         DocumentSnapshot player =await db.Collection(collection).Document(FirebaseAuthManager.Instance.UserId).GetSnapshotAsync();
         var dic = player.ToDictionary();
@@ -52,15 +55,9 @@ public class FirebaseFireStoreManager
         {
             Debug.Log("데이터를 불러옵니다");
 
-            PlayerData.Instance.Init(dic[nickName].ToString(), dic[userId].ToString(), int.Parse(dic[score].ToString()),false);
+            PlayerData.Instance.Init(dic[nickName].ToString(), dic[userId].ToString(), int.Parse(dic[score].ToString()));
         }
-        else 
-        {
-            //새로운 데이터 생성
-            Debug.Log("새로운 데이터 생성");
-            PlayerData.Instance.Init(nickname, userId, sco, true);
-            WriteData(nickname, userId, sco);
-        }
+
     }
     public async Task<QuerySnapshot> RankingRead()
     {

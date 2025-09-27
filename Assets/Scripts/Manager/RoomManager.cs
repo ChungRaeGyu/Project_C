@@ -190,8 +190,5 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     #endregion
     // Update is called once per frame
-    void Update()
-    {
-        RoomNameTxt.text = PhotonNetwork.CurrentRoom.Name;
-    }
+
 }
