@@ -11,6 +11,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     bool reStart = false;
     string roomName="";
 
+    public void DisConnect()
+    {
+        PhotonNetwork.Disconnect();
+    }
+    public void OnApplicationQuit()
+    {
+        DisConnect();
+        AddressableManager.Instance.ReleaseAll();
+    }
     public void ReJoindRoom(string name)
     {
         PhotonNetwork.LeaveRoom();

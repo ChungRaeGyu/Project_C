@@ -41,13 +41,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform handParent; //손에 들고 있는 카드들 부모
 
     //인수
-    private float startTime = 0;
-    private float time = 0;
+    private double startTime = 0;
+    private double time = 0;
     private bool isStart = false;
     
     [HideInInspector]
     public int cost = 0;
-    private float costTime = 0;
+    private double costTime = 0;
     private int occupation = 3; //점령확인
 
     private PhotonView pv;
@@ -104,23 +104,7 @@ public class GameManager : MonoBehaviour
     {
         objList[n].Add(obj);
     }
-    private void Update()
-    {
-        if (!isStart) return;
 
-        //StatrTime을 조절 해줘야한다. 지금 시간이 개판임
-        time = (int)(PhotonNetwork.Time - startTime);
-        if (time - costTime >= 1)
-        {
-            costTime = time;
-            cost++;
-            cost = Math.Min(cost, 10);
-        }
-
-        timeText.text = System.TimeSpan.FromSeconds(time).ToString(@"mm\:ss"); //시간 동기화
-        CostText.text = $"{cost}";
-
-    }
 
     public void Occupation(int num)
     {
@@ -167,26 +151,7 @@ public class GameManager : MonoBehaviour
             EndPanel.Init(false);
         }
     }
-    private void SetTime()
-    {
-        double startTime = PhotonNetwork.Time;
-        PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "StartTime", startTime } });
-    }
-    private void Init()
-    {
-        //첫 시작
-        if(PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("StartTime", out var t))
-        {
-            startTime = (float)t;
-        }
 
-        isStart = true;
-        for (int i = 0; i < startHandCount; i++)
-        {
-           DrawCard();
-        }
-
-    }
     private void Reset()
     {
         //Enable떄 init()을 해버려도 될
@@ -301,6 +266,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        currentDeck = new Queue<Unit>(DataManager.Instance.SuffleDeck());
         GoToLobbyBtn.onClick.AddListener(LobbyBtn);
         GoToRoomBtn.onClick.AddListener(() =>
         {
@@ -310,7 +276,44 @@ public class GameManager : MonoBehaviour
         {
             SetTime();
         }
-        currentDeck = new Queue<Unit>(DataManager.Instance.SuffleDeck());
         Init();
+    }
+    private void Update()
+    {
+        if (!isStart) return;
+
+        //StatrTime을 조절 해줘야한다. 지금 시간이 개판임
+        time = PhotonNetwork.Time - startTime;
+        if (time - costTime >= 1)
+        {
+            costTime = time;
+            cost++;
+            cost = Math.Min(cost, 10);
+        }
+
+        timeText.text = System.TimeSpan.FromSeconds((int)time).ToString(@"mm\:ss"); //시간 동기화
+        CostText.text = $"{cost}";
+
+    }
+    private void SetTime()
+    {
+        startTime = PhotonNetwork.Time;
+        Debug.Log("시작 시간 " + startTime);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "StartTime", startTime } });
+    }
+    private void Init()
+    {
+        //첫 시작
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("StartTime", out var t))
+        {
+            startTime = Convert.ToDouble(t);
+        }
+
+        isStart = true;
+        for (int i = 0; i < startHandCount; i++)
+        {
+            DrawCard();
+        }
+
     }
 }
