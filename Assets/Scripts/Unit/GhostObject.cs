@@ -20,15 +20,6 @@ public class GhostObject : MonoBehaviour
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         origin = skinnedMeshRenderer.materials[0].color;
     }
-
-    public void HandleInit()
-    {
-        AddressableManager.Instance.OnreleaseHandle += ReleaseAllObj;
-    }
-    public void ReleaseAllObj()
-    {
-        AddressableManager.Instance.ReleaseObj(handle);
-    }
     private void Spawn()
     {
         //¿Ø¥÷ º“»Ø

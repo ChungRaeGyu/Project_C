@@ -1,6 +1,9 @@
-using UnityEngine;
+using Firebase;
 using Firebase.Auth;
+using Firebase.Extensions;
+using Firebase.Firestore;
 using System;
+using UnityEngine;
 
 public class FirebaseAuthManager
 {
@@ -48,7 +51,7 @@ public class FirebaseAuthManager
 
     public void Creat(string email, string password)
     {
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
+        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
         {
             if (task.IsCanceled)
             {
@@ -72,7 +75,7 @@ public class FirebaseAuthManager
     }
     public void Login(string email, string password)
     {
-        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
+        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
         {
             if (task.IsCanceled)
             {
@@ -91,9 +94,9 @@ public class FirebaseAuthManager
             FirebaseFireStoreManager.Instance.ReadData();
 
             NetworkManager.Instance.ConnectBtn();//로그인 눌렀을때 다 데이터 넣고 씬넘기기
-
             //새로운 사람이면 닉네임 정하는 칸 만들어주기
         });
+        
     }
 
     public void LogOut()

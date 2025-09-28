@@ -13,7 +13,7 @@ public class SpawnLowCost : UnitObj
 
         for (int i=0; i < 3; i++)
         {
-            if (i != line && GameManager.Instance.objList[i].Count<4)
+            if (i != line && GameManager.Instance.objList[i].Count<4 && GameManager.Instance.lineBool[i])
             {
                 Vector3 pos = PhotonNetwork.IsMasterClient ? GameManager.Instance.spawnPosition[i].position : GameManager.Instance.spawnPosition[i + 3].position;
                 GameObject obj = PhotonNetwork.Instantiate($"Assets/Prefabs/Unit/{babyWolf.unitName}.prefab", pos, Quaternion.identity);

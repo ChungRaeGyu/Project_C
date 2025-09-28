@@ -64,9 +64,7 @@ public class GameManager : MonoBehaviour
     public Transform[] spawnPosition;
     public Transform[] tPosition; //탑의 위치 값으로 쓰면 되겠다
 
-    Camera cam;
-    Vector3 masterCamera = new Vector3(-0.43f, 20.92f, -15.72f);
-    Vector3 slaveCamera = new Vector3(-0.43f, 20.92f, 29.5f);
+
     
     
     //UI
@@ -83,17 +81,8 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         pv = GetComponent<PhotonView>();
-        cam = Camera.main;
         SpawnArea();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            cam.transform.position = masterCamera;
-        }
-        else
-        {
-            cam.transform.position = slaveCamera;
-            cam.transform.rotation = Quaternion.Euler(45, 180, 0);
-        }
+
         if (PhotonNetwork.OfflineMode)
         {
             Debug.Log("오프라인 끄기");
@@ -151,8 +140,7 @@ public class GameManager : MonoBehaviour
         lineBool[n] = false; //라인닫기
         foreach (var obj in objList[n])
         {
-            //AddressableManager.Instance.Destroy(obj);
-            PhotonNetwork.Destroy(obj.gameObject);
+            obj.GetComponent<UnitObj>().Remove();
         }
         objList[n].Clear();
     }
@@ -317,13 +305,15 @@ public class GameManager : MonoBehaviour
             unit.damage -= (int)num[2];
         }
     }
+    public void LobbyBtn()
+    {
+        GoToLobbyBtn.interactable = false;
+        NetworkManager.Instance.GotoLobby();
 
+    }
     void Start()
     {
-        GoToLobbyBtn.onClick.AddListener(() =>
-        {
-            NetworkManager.Instance.GotoLobby();
-        });
+        GoToLobbyBtn.onClick.AddListener(LobbyBtn);
         GoToRoomBtn.onClick.AddListener(() =>
         {
             NetworkManager.Instance.ReJoindRoom(PhotonNetwork.CurrentRoom.Name);

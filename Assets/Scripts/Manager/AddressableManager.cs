@@ -39,6 +39,7 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
     {
         //유닛 삭제 됌
         Addressables.ReleaseInstance(obj);
+        Debug.Log("로컬삭제");
     }
     public void ReleaseImage(AsyncOperationHandle handle)
     {
@@ -67,7 +68,7 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
     public void Destroy(GameObject gameObject)
     {
         Addressables.ReleaseInstance(gameObject);
-
+        Debug.Log("삭제");
     }
     #region 포톤네트워크와의 연계를 위한
     /*    public GameObject Instantiate(string path, Vector3 position, Quaternion rotation)

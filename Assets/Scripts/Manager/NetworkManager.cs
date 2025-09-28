@@ -26,6 +26,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         AddressableManager.Instance.ReleaseAll();
         PhotonNetwork.LeaveRoom();
     }
+    public override void OnLeftRoom()
+    {
+        JoinLobby();
+    }
     public void ConnectBtn()
     {
         //시작씬 버튼
@@ -85,7 +89,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Screen.SetResolution(540, 960, false);
+//        Screen.SetResolution(540, 960, false);
         Application.runInBackground = true; // 포커스 잃어도 네트워크 유지에 도움
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.SendRate = 60;

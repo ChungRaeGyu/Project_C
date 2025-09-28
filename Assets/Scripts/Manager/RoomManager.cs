@@ -10,7 +10,6 @@ using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
-    public TMP_Text RoomNameTxt;
     public Button ReadyOrStartBtn;
     private TMP_Text ButtonText;
     [Header("DeckPanel")] //이거 지금 보여줘야함
@@ -84,9 +83,14 @@ public class RoomManager : MonoBehaviourPunCallbacks
     private void ReadybtnSetting()
     {
         ReadyOrStartBtn.interactable = PhotonNetwork.IsMasterClient ? false : true;
-        ButtonText.text = PhotonNetwork.IsMasterClient ? "Start" : "Not Ready";
+        ButtonText.text = PhotonNetwork.IsMasterClient ? "준비" : "준비 됌";
         ReadyOrStartBtn.onClick.AddListener(PhotonNetwork.IsMasterClient ? StartBtn : Readybtn);
 
+    }
+
+    public void LeaveRoomBtn()
+    {
+        NetworkManager.Instance.GotoLobby();
     }
 
     void StartBtn()
@@ -94,6 +98,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.AutomaticallySyncScene)
         {
             AddressableManager.Instance.ReleaseAll();
+            PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.LoadLevel("Game");
 
         }

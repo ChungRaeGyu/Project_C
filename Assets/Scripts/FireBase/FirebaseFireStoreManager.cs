@@ -29,19 +29,19 @@ public class FirebaseFireStoreManager
     {
         db = FirebaseFirestore.DefaultInstance;
     }
-    public void WriteData(string nickname,string userId, int sco)
+    public void WriteData(string nickname,string email, int sco)
     {
         Debug.Log("데이터를 저장합니다.");   
         DocumentReference docRef = db.Collection(collection).
         Document(FirebaseAuthManager.Instance.UserId);
         Dictionary<string, object> data = new Dictionary<string, object>();
         data.Add(nickName, nickname);
-        data.Add(userId, FirebaseAuthManager.Instance.UserId);
+        data.Add(userId, email);
         data.Add(score, sco);
 
         docRef.SetAsync(data).ContinueWith(task =>
         {
-            Debug.Log("쓰기완료");
+            Debug.Log($"쓰기완료 nickName : {nickname},userId : {email}, score : { sco}");
         });
 
         Debug.Log("새로운 데이터 생성");

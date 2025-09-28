@@ -98,7 +98,6 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         GhostObject script = ghostObject.GetComponent<GhostObject>();
         script.card = this;
         script.handle = handle;
-        script.HandleInit();
     }
 
     public void CardRemove()

@@ -40,7 +40,7 @@ public class PlayerData
     public void AddScore(int s)
     {
         currentScore += s;
-        currentScore = Math.Min(currentScore, 0);
+        currentScore = currentScore < 0 ? 0 : currentScore;
         if (currentScore != score)
         {
             FirebaseFireStoreManager.Instance.UpdateField(currentScore);

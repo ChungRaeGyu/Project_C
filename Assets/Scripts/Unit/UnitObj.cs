@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -55,6 +56,14 @@ public class UnitObj : MonoBehaviour
     }
     public void Remove()
     {
-        PhotonNetwork.Destroy(this.gameObject);
+        if(!pv.IsMine) {return;}
+        AddressableManager.Instance.OnreleaseHandle -= Remove;
+        try
+        {
+            PhotonNetwork.Destroy(this.gameObject);
+        }catch(Exception e)
+        {
+            Debug.LogError(gameObject.name + " ¿À·ù : " + e.Message);
+        }
     }
 }
