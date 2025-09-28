@@ -51,10 +51,8 @@ public class UIManager : MonoBehaviour
 
     private void @switch(Transform a, Transform b)
     {
-        Transform temp = a;
-        a = b;
-        b = temp;
-        a.gameObject.transform.position = a.position;
-        b.gameObject.transform.position = b.position;
+        Vector3 temp = a.position;
+        a.position = b.position;
+        b.position = temp;
     }
 }

@@ -167,22 +167,10 @@ public class GameManager : MonoBehaviour
             EndPanel.Init(false);
         }
     }
-
     private void SetTime()
     {
-        int startTime = PhotonNetwork.ServerTimestamp;
+        double startTime = PhotonNetwork.Time;
         PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "StartTime", startTime } });
-    }
-
-    IEnumerator Progress()
-    {
-        //시간의 흐름
-        //자원 올려주기
-        //점령
-        //승,패
-        
-        yield return null;
-
     }
     private void Init()
     {

@@ -25,6 +25,7 @@ public class LobbyManager : MonoBehaviour
         quickMatchBtn.onClick.AddListener(() =>
         {
             NetworkManager.Instance.QuickMatchBtn();
+            quickMatchBtn.interactable = false;
         });
 
         Init();

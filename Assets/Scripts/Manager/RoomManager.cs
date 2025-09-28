@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public Button ReadyOrStartBtn;
+    public Button LeftRoomBtn;
+
     private TMP_Text ButtonText;
     [Header("DeckPanel")] //이거 지금 보여줘야함
     public GameObject DeckPanel;
@@ -22,7 +25,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text slaveNickname;
 
     public const string ReadyKey = "readyKey";
-
+    public const string RoomState = "roomState";
     private List<AsyncOperationHandle> handles = new List<AsyncOperationHandle>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //내가 하고 싶은 것 properties이용해서 준비상태를 결정
@@ -79,20 +82,42 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
         ReadybtnSetting();
     }
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        slaveNickname.text = newPlayer.NickName;
+    }
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        slaveNickname.text = "Slave";
+        kindImage[1].sprite = null;
+        kindImage[1].color = new Color(1, 1, 1, 0);
+        readyImage[1].color = new Color(1, 1, 1, 0);
 
+    }
     private void ReadybtnSetting()
     {
         ReadyOrStartBtn.interactable = PhotonNetwork.IsMasterClient ? false : true;
-        ButtonText.text = PhotonNetwork.IsMasterClient ? "준비" : "준비 됌";
+        ButtonText.text = PhotonNetwork.IsMasterClient ? "시작" : "준비하기";
         ReadyOrStartBtn.onClick.AddListener(PhotonNetwork.IsMasterClient ? StartBtn : Readybtn);
 
     }
 
     public void LeaveRoomBtn()
     {
-        NetworkManager.Instance.GotoLobby();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { RoomState, true } });
+        }
+        LeftRoomBtn.interactable = false;
     }
-
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        if (propertiesThatChanged.ContainsKey(RoomState))
+        {
+            //방장이 방을 나갔을 때
+            NetworkManager.Instance.GotoLobby();
+        }
+    }
     void StartBtn()
     {
         if (PhotonNetwork.AutomaticallySyncScene)
@@ -119,11 +144,12 @@ public class RoomManager : MonoBehaviourPunCallbacks
         props[ReadyKey] = !current; // 반전
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
-        ButtonText.text = (bool)props[ReadyKey] ? "Ready" : "Not Ready";
+        ButtonText.text = (bool)props[ReadyKey] ? "준비 취소" : "준비하기";
 
     }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
+
         //종류 이미지 바꿔주기
         if(changedProps.ContainsKey("Deck"))
         {
@@ -170,6 +196,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
         handles.Add(handle);
         Sprite sprite = (Sprite)handle.Result;
         readyImage[index].sprite = sprite;
+        readyImage[index].color = new Color(1, 1, 1, 1);
+
     }
     private async Task kindUI(int index, int deckIndex)
     {
@@ -179,6 +207,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         handles.Add(handle);
         Sprite sprite = (Sprite)handle.Result;
         kindImage[index].sprite = sprite;
+        kindImage[index].color = new Color(1, 1, 1, 1);
     }
     public void ReleaseAllImage()
     {

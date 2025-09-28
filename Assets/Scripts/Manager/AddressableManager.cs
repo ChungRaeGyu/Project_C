@@ -67,6 +67,7 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
 
     public void Destroy(GameObject gameObject)
     {
+        if(gameObject==null) return;
         Addressables.ReleaseInstance(gameObject);
         Debug.Log("ªË¡¶");
     }

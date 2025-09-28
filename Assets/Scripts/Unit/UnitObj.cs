@@ -56,14 +56,9 @@ public class UnitObj : MonoBehaviour
     }
     public void Remove()
     {
-        if(!pv.IsMine) {return;}
+        if (this == null) return;   // UnitObj 자체가 Destroy된 경우
+        if (gameObject == null) return; // GameObject가 Destroy된 경우
         AddressableManager.Instance.OnreleaseHandle -= Remove;
-        try
-        {
-            PhotonNetwork.Destroy(this.gameObject);
-        }catch(Exception e)
-        {
-            Debug.LogError(gameObject.name + " 오류 : " + e.Message);
-        }
+        PhotonNetwork.Destroy(this.gameObject);
     }
 }
