@@ -42,7 +42,9 @@ public class GhostObject : MonoBehaviour
         }
         else
         {
-            card.image.enabled = true;
+            card.image[0].enabled = true;
+            card.image[1].enabled = true;
+
             //놓을 수 없는 곳입니다.
             //
             Debug.Log("놓을 수 없는 곳입니다.");

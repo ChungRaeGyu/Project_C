@@ -13,13 +13,6 @@ public class Ranking : MonoBehaviour
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    private async void Start()
-    {
-        var temp = await FirebaseFireStoreManager.Instance.RankingRead();
-        await UpdateRanking(temp);
-        Debug.Log("½ÇÇà");
-
-    }
 
     private async void OnEnable()
     {

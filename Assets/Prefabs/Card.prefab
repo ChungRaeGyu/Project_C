@@ -54,7 +54,7 @@ MonoBehaviour:
   unit: {fileID: 0}
   descriptionPanel: {fileID: 0}
   image: {fileID: 0}
-  holdTime: 0.5
+  holdTime: 0.3
   text: {fileID: 4632588818968330927}
 --- !u!1 &7066005702306350139
 GameObject:

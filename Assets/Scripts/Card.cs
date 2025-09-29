@@ -17,7 +17,7 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [HideInInspector]
     public DescriptionPanel descriptionPanel;
     [HideInInspector]
-    public Image image;
+    public Image[] image;
     [HideInInspector]
     public AsyncOperationHandle handle;
     private Sprite sprite;
@@ -31,12 +31,12 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
    
     public async Task Init(Unit u,DescriptionPanel desp, AsyncOperationHandle hand)
     {
-        image = GetComponentInChildren<Image>();
+        image = GetComponentsInChildren<Image>();
         unit = u;
         descriptionPanel = desp;
         handle = hand;
         sprite = (Sprite)await handle.Task;
-        image.sprite = sprite;
+        image[0].sprite = sprite;
         AddressableManager.Instance.OnreleaseHandle += ReleaseAllCardImage;
         initialized = true;
         text.text = u.cost.ToString();
@@ -72,9 +72,9 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (isPressed)
         {
             //카드의 기본정보를 얻고 설명창을 열어 줄꺼야
-            descriptionPanel.gameObject.SetActive(true);
+            descriptionPanel.gameObject.SetActive(!descriptionPanel.gameObject.activeSelf);
             descriptionPanel.unit = unit;
-            descriptionPanel.sprite = image.sprite;
+            descriptionPanel.sprite = image[0].sprite;
             descriptionPanel.init();
             ResetPress();
         }
@@ -90,7 +90,9 @@ public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private async Task SpawnGhostObject()
     {
-        image.enabled = false;
+        image[0].enabled = false;
+        image[1].enabled = false;
+
         string path = $"Assets/Prefabs/Ghost/{unit.unitName}.prefab";
         var handle = await AddressableManager.Instance.Instantiate(path);
         GameObject ghostObject = await handle.Task;

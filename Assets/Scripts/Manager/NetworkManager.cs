@@ -1,6 +1,5 @@
 using Photon.Pun;
 using Photon.Realtime;
-using TMPro;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -17,6 +16,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public void OnApplicationQuit()
     {
+        GotoLobby();
         DisConnect();
         AddressableManager.Instance.ReleaseAll();
     }

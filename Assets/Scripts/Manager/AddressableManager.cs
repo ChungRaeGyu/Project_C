@@ -1,7 +1,5 @@
 using Photon.Pun;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -38,6 +36,7 @@ public class AddressableManager : MonoBehaviour, IPunPrefabPool
     public void ReleaseObj(AsyncOperationHandle obj)
     {
         //유닛 삭제 됌
+        if (!obj.IsValid()) return;
         Addressables.ReleaseInstance(obj);
         Debug.Log("로컬삭제");
     }
