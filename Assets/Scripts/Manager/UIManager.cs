@@ -56,12 +56,13 @@ public class UIManager : MonoBehaviourPunCallbacks
 
     private void Rotateobj()
     {
-        foreach (TMP_Text t in canvas)
-        {
-            t.gameObject.transform.localScale = new Vector3(-1, -1, -1);
-        }
         @switch(canvas[0].gameObject.transform, canvas[2].gameObject.transform);
         @switch(canvas[3].gameObject.transform, canvas[5].gameObject.transform);
+
+        @switch(canvas[0].gameObject.transform, canvas[3].gameObject.transform);
+        @switch(canvas[2].gameObject.transform, canvas[5].gameObject.transform);
+
+
     }
 
     private void SlaveSetting()

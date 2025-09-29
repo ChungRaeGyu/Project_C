@@ -284,10 +284,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             NetworkManager.Instance.ReJoindRoom(PhotonNetwork.CurrentRoom.Name);
         });
-        if (PhotonNetwork.IsMasterClient)
-        {
-            SetTime();
-        }
+        SetTime();
         Init();
     }
     private void Update()
@@ -309,23 +306,29 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     private void SetTime()
     {
-        startTime = PhotonNetwork.Time;
-        Debug.Log("시작 시간 " + startTime);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "StartTime", startTime } });
+        if (PhotonNetwork.IsMasterClient)
+        {
+            startTime = PhotonNetwork.Time;
+            Debug.Log("시작 시간 " + startTime);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "StartTime", startTime } });
+        }
+
     }
-    private void Init()
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        //첫 시작
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("StartTime", out var t))
         {
             startTime = Convert.ToDouble(t);
+            Debug.Log("시간");
         }
-
+    }
+ 
+    private void Init()
+    {
         isStart = true;
         for (int i = 0; i < startHandCount; i++)
         {
             DrawCard();
         }
-
     }
 }
