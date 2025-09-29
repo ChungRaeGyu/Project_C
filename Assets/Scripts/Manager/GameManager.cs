@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.SlotRacer.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ public enum EDeBuff
     BRINGANYWAY,
     ATKSPEEDDOWN
 }
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance;
     [Header("Test Settings")]
@@ -57,13 +58,12 @@ public class GameManager : MonoBehaviour
     [HideInInspector] 
     public bool[] lineBool = new bool[]{ true, true, true };
 
-
     [SerializeField] GameObject[] masterSpawn;
     [SerializeField] GameObject[] slaveSpawn;
 
     public Transform[] spawnPosition;
     public Transform[] tPosition; //탑의 위치 값으로 쓰면 되겠다
-
+    
 
     
     
@@ -100,13 +100,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LindAdd(GameObject obj,int n)
+    public void LindAdd(GameObject obj, int n)
     {
         objList[n].Add(obj);
+        n = PhotonNetwork.IsMasterClient ? n : n + 3;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "UnitCount", 1 },{"Line",n } });
+    }
+    public void LineRemove(List<GameObject> list, int line)
+    {
+        int i = 0;
+        foreach (GameObject obj in list)
+        {
+            i++;
+            objList[line].Remove(obj);
+        }
+        line = PhotonNetwork.IsMasterClient ? line : line + 3;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "UnitCount", -i }, { "Line", line } });
     }
 
-
-    public void Occupation(int num)
+    public void Occupation(int num) 
     {
         
         //탑에서 호출

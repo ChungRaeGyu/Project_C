@@ -1,9 +1,14 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] Transform[] canvas;
+    [SerializeField] TMP_Text[] canvas;
+    private int[] countA = new int[6];
+    private const string UnitCount = "UnitCount";
+    private const string Line = "Line";
 
     Camera cam;
     Vector3 masterCamera = new Vector3(-0.43f, 20.92f, -15.72f);
@@ -31,16 +36,40 @@ public class UIManager : MonoBehaviour
             SlaveSetting();
         }
     }
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        if (!propertiesThatChanged.ContainsKey(Line)) return;
+        int line = int.Parse(propertiesThatChanged[Line].ToString());
+        int count = int.Parse(propertiesThatChanged[UnitCount].ToString());
+        countA[line] += count;
+        UpdateLineCount(line);
+    }
+    private void UpdateLineCount(int line)
+    {
+        canvas[line].text = $"{countA[line].ToString()}/4";
+    }
     private void MasterSetting()
     {
         cam.transform.position = masterCamera;
+        //인원수 세팅
     }
+
+    private void Rotateobj()
+    {
+        foreach (TMP_Text t in canvas)
+        {
+            t.gameObject.transform.localScale = new Vector3(-1, -1, -1);
+        }
+        @switch(canvas[0].gameObject.transform, canvas[2].gameObject.transform);
+        @switch(canvas[3].gameObject.transform, canvas[5].gameObject.transform);
+    }
+
     private void SlaveSetting()
     {
         cam.transform.position = slaveCamera;
         cam.transform.rotation = Quaternion.Euler(45, 180, 0);
         HpSet();
-
+        Rotateobj();
     }
 
     private void HpSet()

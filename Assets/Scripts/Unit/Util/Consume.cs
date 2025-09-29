@@ -39,10 +39,7 @@ public class Consume : UnitObj
     }
     void RemoveObject(int line)
     {
-        foreach(GameObject obj in list)
-        {
-            GameManager.Instance.objList[line].Remove(obj);
-        }
+        GameManager.Instance.LineRemove(list,line);
         list.Clear();
     }
 }
