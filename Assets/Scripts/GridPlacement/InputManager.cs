@@ -19,10 +19,7 @@ public class InputManager : MonoBehaviour
         {
             lastPosition = hit.point;
         }
-        else
-        {
-            Debug.Log("¾È‰Î");
-        }
+
         return lastPosition;
 
     }

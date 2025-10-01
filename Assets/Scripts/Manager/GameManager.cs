@@ -58,11 +58,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     [HideInInspector] 
     public bool[] lineBool = new bool[]{ true, true, true };
 
-    [SerializeField] GameObject[] masterSpawn;
-    [SerializeField] GameObject[] slaveSpawn;
+    [SerializeField] GameObject masterSpawn;
+    [SerializeField] GameObject slaveSpawn;
 
     public Transform[] spawnPosition;
     public Transform[] tPosition; //탑의 위치 값으로 쓰면 되겠다
+
+    public PlacementSystem placementSystem;
     
 
     
@@ -81,7 +83,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         Instance = this;
 
         pv = GetComponent<PhotonView>();
-        SpawnArea();
 
         if (PhotonNetwork.OfflineMode)
         {
@@ -90,13 +91,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void SpawnArea()
+    public void SpawnArea(bool active)
     {
         bool check = PhotonNetwork.IsMasterClient;
-        for (int i = 0; i < masterSpawn.Length; i++)
+        if (check)
         {
-            masterSpawn[i].SetActive(check);
-            slaveSpawn[i].SetActive(!check);
+            masterSpawn.SetActive(active);
+        }
+        else
+        {
+            slaveSpawn.SetActive(active);
         }
     }
 

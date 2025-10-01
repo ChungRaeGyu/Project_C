@@ -12,6 +12,10 @@ public class ToastMessage : MonoBehaviour
 
     private Coroutine currentCoroutine;
 
+    [SerializeField] GameObject background;
+    [SerializeField] GameObject shadow;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -23,6 +27,7 @@ public class ToastMessage : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
     }
 
     public void ShowMessage(string message)
@@ -36,10 +41,11 @@ public class ToastMessage : MonoBehaviour
     private IEnumerator ShowRoutine(string message)
     {
         messageText.text = message;
-        gameObject.SetActive(true);
-
+        background.SetActive(true);
+        shadow.SetActive(true);
         yield return new WaitForSeconds(duration);
 
-        gameObject.SetActive(false);
+        background.SetActive(false);
+        shadow.SetActive(false);
     }
 }

@@ -19,6 +19,7 @@ public class GhostObject : MonoBehaviour
     {
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         origin = skinnedMeshRenderer.materials[0].color;
+        GameManager.Instance.placementSystem.StartPlace(this.gameObject);
     }
     private void Spawn()
     {
@@ -50,6 +51,7 @@ public class GhostObject : MonoBehaviour
             Debug.Log("놓을 수 없는 곳입니다.");
         }
         AddressableManager.Instance.ReleaseObj(handle); //고스트 삭제
+        GameManager.Instance.placementSystem.EndPlace();
 
     }
 
@@ -80,25 +82,10 @@ public class GhostObject : MonoBehaviour
 
     private void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane plane = new Plane(Vector3.up, Vector3.zero); // y=0 평면
-        if (plane.Raycast(ray, out float distance))
+        if (Input.GetMouseButtonUp(0))
         {
-            Vector3 hitPoint = ray.GetPoint(distance); // 레이가 평면과 교차한 지점
-            transform.position = hitPoint;
+            Spawn();
         }
-        if (CanPlaced(transform.position, GetLine()))
-        {
-            skinnedMeshRenderer.materials[0].color = origin;
-        }
-        else
-        {
-            skinnedMeshRenderer.materials[0].color = red;
-        }
-            if (Input.GetMouseButtonUp(0))
-            {
-                Spawn();
-            }
         //여기서 일단 드래그 중인걸 표현하고? PointerUp하면 실제 소환하는 거다.
         //마우스 따라오기 PointerUp이 필요하네
     }
