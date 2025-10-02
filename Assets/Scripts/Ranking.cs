@@ -1,9 +1,7 @@
 using Firebase.Firestore;
-using Photon.Pun;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class Ranking : MonoBehaviour
 {

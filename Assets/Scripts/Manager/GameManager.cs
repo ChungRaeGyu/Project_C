@@ -304,7 +304,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             cost = Math.Min(cost, 10);
         }
 
-        timeText.text = System.TimeSpan.FromSeconds((int)time).ToString(@"mm\:ss"); //시간 동기화
+            timeText.text = System.TimeSpan.FromSeconds((int)time).ToString(@"mm\:ss"); //시간 동기화
         CostText.text = $"{cost}";
 
     }
@@ -324,12 +324,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             startTime = Convert.ToDouble(t);
             Debug.Log("시간");
+            isStart = true;
         }
     }
  
     private void Init()
     {
-        isStart = true;
         for (int i = 0; i < startHandCount; i++)
         {
             DrawCard();
