@@ -1,12 +1,15 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.LowLevel;
 
 public enum State
 {
     SEARCH,
-    ATTACK
+    ATTACK,
+    Die
 }
 public class UnitFSM : MonoBehaviour
 {
@@ -16,10 +19,11 @@ public class UnitFSM : MonoBehaviour
 */
     
     public State currentState;
+    private bool roop =false;
     Collider col;
     Bounds bounds; //캐릭터의 Collider크기
     Collider[] searchCo = new Collider[10];
-
+    private string[] animaterParam = new string[] { "Run", "Attack", "Die" };
     private LayerMask layerMask;
     [HideInInspector]
     public NavMeshAgent agent; //여기서 속도 조절 해줘야한다.
@@ -41,6 +45,7 @@ public class UnitFSM : MonoBehaviour
         unitObj = GetComponent<UnitObj>();
         animator = GetComponent<Animator>();
         pv = GetComponent<PhotonView>();
+
     }
 
     void Start()
@@ -71,9 +76,25 @@ public class UnitFSM : MonoBehaviour
             case State.ATTACK:
                 Attack();
                 break;
+            case State.Die:
+                Die();
+                break;
         }
     }
+    public void DieAction()
+    {
+        ChangeState(State.Die);
+    }
+    private void Die()
+    {
 
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (stateInfo.IsName("Death") && stateInfo.normalizedTime >= 0.9f)
+        {
+            unitObj.Remove();
+        }
+    }
     private void Attack()
     {
         //공격메서드
@@ -102,7 +123,6 @@ public class UnitFSM : MonoBehaviour
     IEnumerator Search()
     {
         yield return new WaitForEndOfFrame();
-        animator.SetTrigger("Run");
         //장애물을 찾고 발견하면 부수고 지나가야 한다.
         if (!target)
         {
@@ -130,9 +150,23 @@ public class UnitFSM : MonoBehaviour
 
         }
     }
-    private void ChangeState(State state)
+    private void ChangeState(State newState)
     {
-        currentState = state;
+        
+        ExitState(currentState);
+        currentState = newState;
+        EnterState(newState);
+    }
+
+    private void EnterState(State newState)
+    {
+        if (animator == null) return;
+        animator.SetTrigger(animaterParam[(int)newState]);
+    }
+
+    private void ExitState(State currentState)
+    {
+        Debug.Log("나감");
     }
 
     void OnDrawGizmos()

@@ -11,7 +11,7 @@ public class FirebaseFireStoreManager
     private const string userId = "ID";
     private const string score = "Score";
 
-    public bool isUpdate = false;
+    public bool isUpdate = true;
     private static FirebaseFireStoreManager instance;
     public static FirebaseFireStoreManager Instance
     {

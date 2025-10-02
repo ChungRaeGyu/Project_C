@@ -9,7 +9,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public static NetworkManager Instance;
     bool reStart = false;
     string roomName="";
-
+    public void Quit()
+    {
+        Application.Quit();
+    }
     public void DisConnect()
     {
         PhotonNetwork.Disconnect();

@@ -20,6 +20,7 @@ public class UnitObj : MonoBehaviour
     [HideInInspector] public NavMeshAgent agent;
     [HideInInspector] public AsyncOperationHandle handle;
     [SerializeField] TMP_Text text;
+    private UnitFSM unitFSM;
     public RectTransform[] canvas;
     protected PhotonView pv;
     private void Awake()
@@ -27,6 +28,7 @@ public class UnitObj : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         pv = GetComponent<PhotonView>();
         canvas = GetComponentsInChildren<RectTransform>();
+        unitFSM = GetComponent<UnitFSM>();
     }
     public void InitRPC(int line, string unitName, int cost, int damage, float attackSpeed, float speed)
     {
@@ -52,13 +54,13 @@ public class UnitObj : MonoBehaviour
     }
     public void HandleInit()
     {
-        AddressableManager.Instance.OnreleaseHandle += Remove;
+        AddressableManager.Instance.OnreleaseHandle += unitFSM.DieAction;
     }
     public void Remove()
     {
+        AddressableManager.Instance.OnreleaseHandle -= unitFSM.DieAction;
         if (this == null) return;   // UnitObj 자체가 Destroy된 경우
         if (gameObject == null) return; // GameObject가 Destroy된 경우
-        AddressableManager.Instance.OnreleaseHandle -= Remove;
         PhotonNetwork.Destroy(this.gameObject);
     }
 }

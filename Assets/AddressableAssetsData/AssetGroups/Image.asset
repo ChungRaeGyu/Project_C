@@ -41,12 +41,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 518c3d1850a549940bc985f584c454b1
-    m_Address: Assets/Images/FirstDeck.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 51c5a9e67a849304eaa867fab5fd81f2
     m_Address: Assets/Images/Unit/Cat.png
     m_ReadOnly: 0
@@ -83,6 +77,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9f3a5e0df3dcf1247b11ca362acafd63
     m_Address: Assets/Images/Unit/Raccoon.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a45a616b689dca14c9a7c7d3e9c352dd
+    m_Address: Assets/Images/FirstDeck.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
