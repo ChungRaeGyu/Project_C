@@ -55,13 +55,13 @@ public class FirebaseAuthManager
         {
             if (task.IsCanceled)
             {
-                Debug.LogError("회원가입 취소");
+                ToastMessage.Instance.ShowMessage("회원가입 취소");
+
                 return;
             }
             if (task.IsFaulted)
             {
-                Debug.LogError("회원가입 실패" + task.Exception); 
-
+                ToastMessage.Instance.ShowMessage("회원가입 실패");
                 // AggregateException 내부 메시지 보기 (좀 더 읽기 쉽게)
                 foreach (var ex in task.Exception.Flatten().InnerExceptions)
                     Debug.LogError("Inner: " + ex.Message);
@@ -69,7 +69,7 @@ public class FirebaseAuthManager
             }
             AuthResult result = task.Result;
             FirebaseUser newUser = result.User;
-            Debug.LogError("회원가입 완료");
+            ToastMessage.Instance.ShowMessage("회원가입 완료");
             SignState?.Invoke();
         });
     }
@@ -79,24 +79,26 @@ public class FirebaseAuthManager
         {
             if (task.IsCanceled)
             {
-                Debug.LogError("로그인 취소");
+                ToastMessage.Instance.ShowMessage("로그인 취소");
+
                 return;
             }
             if (task.IsFaulted)
             {
-                Debug.LogError("로그인 실패");
+                ToastMessage.Instance.ShowMessage("로그인 실패");
+
                 return;
             }
             AuthResult result = task.Result;
             FirebaseUser newUser = result.User;
-            Debug.LogError("로그인 완료");
+            ToastMessage.Instance.ShowMessage("로그인 완료");
+
 
             FirebaseFireStoreManager.Instance.ReadData();
 
             NetworkManager.Instance.ConnectBtn();//로그인 눌렀을때 다 데이터 넣고 씬넘기기
             //새로운 사람이면 닉네임 정하는 칸 만들어주기
         });
-        
     }
 
     public void LogOut()
