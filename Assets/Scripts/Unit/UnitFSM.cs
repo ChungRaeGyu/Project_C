@@ -19,7 +19,6 @@ public class UnitFSM : MonoBehaviour
 */
     
     public State currentState;
-    private bool roop =false;
     Collider col;
     Bounds bounds; //캐릭터의 Collider크기
     Collider[] searchCo = new Collider[10];
