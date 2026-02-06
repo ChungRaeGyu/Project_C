@@ -6,7 +6,7 @@
 ## 목차
 - [개요](#개요) 
 - [게임 설명](#게임-설명)
-- [프로젝트 개요 및 목표](#프로젝트-개요-및-목표)
+- [개발 목표](#개발-목표)
 - [시스템 구조](#시스템-구조)
 - [사용 기술](#사용-기술)
 - [트러블 슈팅](#트러블-슈팅)
@@ -44,23 +44,21 @@
 </table>
 
 
-## 🎞 프로젝트 개요 및 목표
-
-### ✅ 개발 목표
+## ✅개발 목표
 1. FireBase를 활용한 로그인과 랭킹만들기
 2. Addressable을 이용한 리소스 관리
 3. PhotonNetwork를 이용한 네트워크 및 동기화 공부
 4. 완성된 루프 만들기
 
 ## 시스템 구조
+<details>
+  <summary>시스템 구조 다이어그램 보기</summary> 
 
-### 🧐 캐릭터 (몬스터 및 플레이어)
-![image (12)](https://github.com/user-attachments/assets/bd2717f8-01bd-40c1-a490-f9b59552381f)![image (13)](https://github.com/user-attachments/assets/a9c839ee-e958-4d18-82d2-92904958538d)
-![image (14)](https://github.com/user-attachments/assets/d41896e0-e3b9-4876-9080-9731b2182eff)
+  <img width="3737" height="6335" alt="Frame 1" src="https://github.com/user-attachments/assets/ef75b060-ba4c-4499-81a5-2e4898661b21" />
 
-### 🎟 카드
-![image (15)](https://github.com/user-attachments/assets/5382cb8e-cf95-493a-b1ab-77e53628a349)
-![image (16)](https://github.com/user-attachments/assets/a9b9941f-4dd0-4390-9b95-d4237b91e070)
+</details>
+
+
 
 ## 사용 기술
 - 멀티플레이
