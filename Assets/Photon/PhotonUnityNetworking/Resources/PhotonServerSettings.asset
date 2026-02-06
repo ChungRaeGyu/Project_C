@@ -40,6 +40,12 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - TestRPC
+  - LineClose
+  - GameOver
+  - PDeBuff
+  - PGetDamage
+  - UpdateUI
+  - Init
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

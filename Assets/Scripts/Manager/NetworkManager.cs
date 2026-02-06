@@ -1,6 +1,5 @@
 using Photon.Pun;
 using Photon.Realtime;
-using TMPro;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -8,10 +7,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 {
 
     public static NetworkManager Instance;
-    public TMP_InputField NickNameInput;
     bool reStart = false;
     string roomName="";
-
+    public void Quit()
+    {
+        Application.Quit();
+    }
+    public void DisConnect()
+    {
+        PhotonNetwork.Disconnect();
+    }
+    public void OnApplicationQuit()
+    {
+        GotoLobby();
+        DisConnect();
+        AddressableManager.Instance.ReleaseAll();
+    }
     public void ReJoindRoom(string name)
     {
         PhotonNetwork.LeaveRoom();
@@ -24,7 +35,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void GotoLobby()
     {
         reStart = false;
+        AddressableManager.Instance.ReleaseAll();
         PhotonNetwork.LeaveRoom();
+    }
+    public override void OnLeftRoom()
+    {
+        JoinLobby();
     }
     public void ConnectBtn()
     {
@@ -33,10 +49,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnConnectedToMaster()
     {
-        print("서버접속 완료");
         if (PhotonNetwork.LocalPlayer.NickName.IsNullOrEmpty())
         {
-            PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
+            PhotonNetwork.LocalPlayer.NickName = PlayerData.Instance.GetNickName();
         }
         JoinLobby();
     }
@@ -45,6 +60,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (reStart)
         {
+            Debug.Log("여기여기여여기때문인가??");
             PhotonNetwork.JoinRoom(roomName);
             return;
         }
@@ -55,16 +71,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void QuickMatchBtn()
     {
         //여기다가 조건을 달면 이게 mmr매칭이나 이런게 된다.
+        AddressableManager.Instance.ReleaseAll();
+        DataManager.Instance.DeckSetting();
+        PhotonNetwork.SetPlayerCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Deck", DataManager.Instance.deckIndex } });
         PhotonNetwork.JoinRandomRoom();
     }
     public override void OnJoinedRoom()
     {
-        print("방입장");
-        PhotonNetwork.LoadLevel("Room");
+        if(PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("Room");
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        print("빈방없음 방생성");
         CreateRoom();
     }
     public void CreateRoom()
@@ -83,10 +101,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        Screen.SetResolution(1080, 600, false);
+//        Screen.SetResolution(540, 960, false);
         Application.runInBackground = true; // 포커스 잃어도 네트워크 유지에 도움
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.SendRate = 60;
         PhotonNetwork.SerializationRate = 60;
+        PhotonNetwork.PrefabPool = new AddressableManager();
+        Debug.Log("[BOOT] Pool = " + (PhotonNetwork.PrefabPool?.GetType().FullName ?? "NULL"));
     }
 }

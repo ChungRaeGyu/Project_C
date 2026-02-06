@@ -1,27 +1,41 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
-    public Text text;
-    public TMP_Text RoomNameTxt;
     public Button ReadyOrStartBtn;
+    public Button LeftRoomBtn;
+
     private TMP_Text ButtonText;
-    
+    [Header("DeckPanel")] //이거 지금 보여줘야함
+    public GameObject DeckPanel;
+    public Transform DeckContent;
+
+    [SerializeField] Image[] readyImage;
+    [SerializeField] Image[] kindImage;  //어떤 덱인지 알려줄 꺼임
+    [SerializeField] TMP_Text masterNickname;
+    [SerializeField] TMP_Text slaveNickname;
+
     public const string ReadyKey = "readyKey";
+    public const string RoomState = "roomState";
+    private List<AsyncOperationHandle> handles = new List<AsyncOperationHandle>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //내가 하고 싶은 것 properties이용해서 준비상태를 결정
 
-    public override void OnMasterClientSwitched(Player newMasterClient)
-    {
-        base.OnMasterClientSwitched(newMasterClient);
-        StartCoroutine(waitJoined());
+    /*    public override void OnMasterClientSwitched(Player newMasterClient)
+        {
+            //나중에 커스텀 룸 만들때 필요함 근데 이게 마스터가 바뀌면서 Room연동이 안됌
+            base.OnMasterClientSwitched(newMasterClient);
+            StartCoroutine(waitJoined());
 
-    }
+        }*/
     private void Awake()
     {
         ButtonText = ReadyOrStartBtn.GetComponentInChildren<TMP_Text>();
@@ -30,37 +44,88 @@ public class RoomManager : MonoBehaviourPunCallbacks
     void Start()
     {
         StartCoroutine(waitJoined());
-        print("마스터 클라이언트 여부 : " + PhotonNetwork.IsMasterClient);
+        AddressableManager.Instance.OnreleaseHandle += ReleaseAllImage;
     }
 
     IEnumerator waitJoined()
     {
         yield return new WaitUntil(() => PhotonNetwork.InRoom);
+        foreach(var player in PhotonNetwork.PlayerList)
+        {
+            if (player.CustomProperties.ContainsKey("Deck"))
+            {
+                if (player.IsMasterClient)
+                {
+
+                    _ = kindUI(0, (int)player.CustomProperties["Deck"]);
+                    masterNickname.text = player.NickName;
+                }
+                else
+                {
+                    _ = kindUI(1, (int)player.CustomProperties["Deck"]);
+                    slaveNickname.text = player.NickName;
+                }
+            }
+            else
+            {
+                Debug.Log(player.NickName);
+            }
+        }
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Deck", DataManager.Instance.deckIndex } });
         if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { ReadyKey, true } });
         else
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { ReadyKey, false } });
 
+        _ = DataManager.Instance.ShowDeck(DataManager.Instance.deckIndex, DeckContent);
+
         ReadybtnSetting();
     }
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        slaveNickname.text = newPlayer.NickName;
+    }
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        slaveNickname.text = "Slave";
+        kindImage[1].sprite = null;
+        kindImage[1].color = new Color(1, 1, 1, 0);
+        readyImage[1].color = new Color(1, 1, 1, 0);
 
+    }
     private void ReadybtnSetting()
     {
         ReadyOrStartBtn.interactable = PhotonNetwork.IsMasterClient ? false : true;
-        ButtonText.text = PhotonNetwork.IsMasterClient ? "Start" : "Not Ready";
+        ButtonText.text = PhotonNetwork.IsMasterClient ? "시작" : "준비하기";
         ReadyOrStartBtn.onClick.AddListener(PhotonNetwork.IsMasterClient ? StartBtn : Readybtn);
 
     }
 
+    public void LeaveRoomBtn()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { RoomState, true } });
+        }
+        LeftRoomBtn.interactable = false;
+    }
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        if (propertiesThatChanged.ContainsKey(RoomState))
+        {
+            //방장이 방을 나갔을 때
+            NetworkManager.Instance.GotoLobby();
+        }
+    }
     void StartBtn()
     {
-        Debug.Log($"[SYNC] IsMaster={PhotonNetwork.IsMasterClient}, " +
-          $"AutoSync={PhotonNetwork.AutomaticallySyncScene}, " +
-          $"InRoom={PhotonNetwork.InRoom}, " +
-          $"State={PhotonNetwork.NetworkClientState}, " +
-          $"MsgQueue={PhotonNetwork.IsMessageQueueRunning}");
         if (PhotonNetwork.AutomaticallySyncScene)
+        {
+            AddressableManager.Instance.ReleaseAll();
+            PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.LoadLevel("Game");
+
+        }
         else
         {
             print("동기화 꺼짐");
@@ -78,36 +143,85 @@ public class RoomManager : MonoBehaviourPunCallbacks
         props[ReadyKey] = !current; // 반전
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
-        ButtonText.text = (bool)props[ReadyKey] ? "Ready" : "Not Ready";
+        ButtonText.text = (bool)props[ReadyKey] ? "준비 취소" : "준비하기";
 
     }
-
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        //TODO : UI 갱신 준비상태 변경시 보여주기 필요
+
+        //종류 이미지 바꿔주기
+        if(changedProps.ContainsKey("Deck"))
+        {
+            if (targetPlayer.IsMasterClient)
+            {
+                _ = kindUI(0, (int)changedProps["Deck"]);
+            }
+            else
+            {
+                _ = kindUI(1, (int)changedProps["Deck"]);
+            }
+        }
         if (!changedProps.ContainsKey(ReadyKey)) return;
 
-        if (PhotonNetwork.CurrentRoom.PlayerCount != 2) return;
-
+        int temp = 0;
         // 마스터만 시작 조건 체크
-        if (PhotonNetwork.IsMasterClient)
+        foreach (var p in PhotonNetwork.PlayerList)
         {
-            foreach (var p in PhotonNetwork.PlayerList)
-            {
-                if (!p.CustomProperties.TryGetValue(ReadyKey, out var v) || !(bool)v)
-                {  //값이 없거나
-                    ReadyOrStartBtn.interactable = false;
-                    return; // 누가 아직 준비 안 됨
+            if (!p.CustomProperties.TryGetValue(ReadyKey, out var v) || !(bool)v)
+            {  //값이 없거나 //값이 false일때
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    ReadyOrStartBtn.interactable = false; // 마스터는 준비 가능
                 }
+                _ = ReadyUI(false, 1);
             }
-
+            else
+            {
+                _ = ReadyUI(true, p.IsMasterClient ? 0 : 1);     
+                temp++;
+            }
+        }
+        if(temp == 2)
+        {
+            temp = 0;
             ReadyOrStartBtn.interactable = true; // 모두 준비 완료
         }
     }
-    // Update is called once per frame
-    void Update()
+
+    private async Task ReadyUI(bool bol, int index)
     {
-        text.text = PhotonNetwork.IsMasterClient ? "마스터" : "손님";
-        RoomNameTxt.text = PhotonNetwork.CurrentRoom.Name;
+        string path = bol ? "Assets/Images/O.png" : "Assets/Images/X.png";
+        AsyncOperationHandle handle= await AddressableManager.Instance.LoadImage(path);
+        handles.Add(handle);
+        Sprite sprite = (Sprite)handle.Result;
+        readyImage[index].sprite = sprite;
+        readyImage[index].color = new Color(1, 1, 1, 1);
+
     }
+    private async Task kindUI(int index, int deckIndex)
+    {
+        Deck eDeck = (Deck)deckIndex;
+        string path = "Assets/Images/" + eDeck.ToString() + ".png";
+        AsyncOperationHandle handle = await AddressableManager.Instance.LoadImage(path);
+        handles.Add(handle);
+        Sprite sprite = (Sprite)handle.Result;
+        kindImage[index].sprite = sprite;
+        kindImage[index].color = new Color(1, 1, 1, 1);
+    }
+    public void ReleaseAllImage()
+    {
+        foreach (var handle in handles)
+        {
+            AddressableManager.Instance.ReleaseImage(handle); 
+        }
+        handles.Clear();
+    }
+    #region DeckPanel
+    public void DeckOpenBtnClick()
+    {
+        DeckPanel.SetActive(!DeckPanel.activeSelf);
+    }
+    #endregion
+    // Update is called once per frame
+
 }

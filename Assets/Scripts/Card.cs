@@ -1,0 +1,115 @@
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Collections;
+using System.Threading.Tasks;
+using Photon.Pun;
+using TMPro;
+
+public class Card : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+{
+
+    //유닛 스폰은 GhostObject에서 한다.
+    [HideInInspector]
+    public Unit unit;
+    [HideInInspector]
+    public DescriptionPanel descriptionPanel;
+    [HideInInspector]
+    public Image[] image;
+    [HideInInspector]
+    public AsyncOperationHandle handle;
+    private Sprite sprite;
+
+    private bool initialized = false;
+    public float holdTime = 1.0f;      // 몇 초 이상 눌러야 하는지
+
+    private bool isPressed = false;
+    private float pressTimer = 0f;
+    [SerializeField] private TMP_Text text;
+   
+    public async Task Init(Unit u,DescriptionPanel desp, AsyncOperationHandle hand)
+    {
+        image = GetComponentsInChildren<Image>();
+        unit = u;
+        descriptionPanel = desp;
+        handle = hand;
+        sprite = (Sprite)await handle.Task;
+        image[0].sprite = sprite;
+        AddressableManager.Instance.OnreleaseHandle += ReleaseAllCardImage;
+        initialized = true;
+        text.text = u.cost.ToString();
+    }
+    void Update()
+    {
+        if (!initialized) return;
+        if (SceneManager.GetActiveScene().buildIndex <= 2)
+        {
+            return;
+        }
+        if (isPressed && unit.cost<=GameManager.Instance.cost)
+        {
+            pressTimer += Time.deltaTime;
+
+            if (pressTimer >= holdTime)
+            {
+                ResetPress();
+                SpawnGhostObject();
+            }
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+
+        isPressed = true;
+        pressTimer = 0f;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (isPressed)
+        {
+            //카드의 기본정보를 얻고 설명창을 열어 줄꺼야
+            descriptionPanel.gameObject.SetActive(!descriptionPanel.gameObject.activeSelf);
+            descriptionPanel.unit = unit;
+            descriptionPanel.sprite = image[0].sprite;
+            descriptionPanel.init();
+            ResetPress();
+        }
+    }
+
+    private void ResetPress()
+    {
+        isPressed = false;
+        pressTimer = 0f;
+
+
+    }
+
+    private async Task SpawnGhostObject()
+    {
+        image[0].enabled = false;
+        image[1].enabled = false;
+
+        string path = $"Assets/Prefabs/Ghost/{unit.unitName}.prefab";
+        var handle = await AddressableManager.Instance.Instantiate(path);
+        GameObject ghostObject = await handle.Task;
+        if (!PhotonNetwork.IsMasterClient) { ghostObject.transform.rotation = Quaternion.Euler(0, 180, 0); }
+        GhostObject script = ghostObject.GetComponent<GhostObject>();
+        script.card = this;
+        script.handle = handle;
+    }
+
+    public void CardRemove()
+    {
+        AddressableManager.Instance.ReleaseImage(handle); //카드 이미지 삭제
+        GameManager.Instance.RemoveCard(unit); //게임매니저에 있는 currenthand에서 이 카드 Unit으로 찾아서 삭제
+        Destroy(gameObject); //카드 삭제 //오브젝트 풀링 가능 나중에
+    }
+    public void ReleaseAllCardImage()
+    {
+        AddressableManager.Instance.ReleaseImage(handle); //카드 이미지 삭제
+    }
+}

@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Ghost
+  m_EditorClassIdentifier: 
+  m_GroupName: Ghost
+  m_GUID: e76ab4ca8d41b364292321ad7b8b5c56
+  m_SerializeEntries:
+  - m_GUID: 2e049b26ee82eb748bb8304497c3f081
+    m_Address: Assets/Prefabs/Ghost/Deer.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41e480018e10df3449120490c61b6709
+    m_Address: Assets/Prefabs/Ghost/Bear.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 489fb7bc3c9a39848911c7b2658f8f8d
+    m_Address: Assets/Prefabs/Ghost/Rabbit.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4edf63eb069403447aaea4fa4d4f42f5
+    m_Address: Assets/Prefabs/Ghost/WolfKing.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 563c19dd3e3128a47bf2537bb706e46c
+    m_Address: Assets/Prefabs/Ghost/Fox.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 960a1083e860ef64b9b16223683ef09f
+    m_Address: Assets/Prefabs/Ghost/Cat.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 968870480e380b845af7ee11902fb87f
+    m_Address: Assets/Prefabs/Ghost/Snake.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9450d68ae4dc0746974b1f7b38d9f02
+    m_Address: Assets/Prefabs/Ghost/Hog.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccbce7f757ee0ca49b45ed4d69b66e3e
+    m_Address: Assets/Prefabs/Ghost/WolfBaby.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db6bbbb468c165a4892c1a98a5723335
+    m_Address: Assets/Prefabs/Ghost/Raccoon.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e457dccc95af82746adb96a319ea0f54
+    m_Address: Assets/Prefabs/Ghost/Tiger.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdf1b2eacfda6fb4d8408ee941227da3
+    m_Address: Assets/Prefabs/Ghost/Mouse.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 5e31874c1bf2220419d4aed124553769, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: cf06d6a686774a64292457892c05701a, type: 2}
+    - {fileID: 11400000, guid: ba304e8b783ec8d49abee212ff4a93f3, type: 2}
